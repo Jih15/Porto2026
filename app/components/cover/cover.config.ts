@@ -3,10 +3,10 @@ import { CoverConfig } from "../types";
 export const coverConfig: CoverConfig = {
     siteLabel: "Portfolio",
     year: "2026",
-    discipline : "Developer",
+    discipline : "Software Engineer",
 
-    tagline: "Creative Portfolio",
+    tagline: "Personal Portfolio",
     firstName: "Zaqaul Fikri",
     lastName: "Aziz",
-    role: "Full-Stack Developer · Mobile Programmer"
+    role: "Web Programmer · Mobile Programmer"
 }

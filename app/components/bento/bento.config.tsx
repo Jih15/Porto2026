@@ -32,7 +32,7 @@ export const bentoItems: BentoItemDef[] = [
     id: 3,
     label:    "Tech",
     sublabel: "Stack",
-    expandable: true,
+    expandable: false,
     bg:          "#141414",
     accentColor: "#b8ff3f",
     expandContent:  <TechContent />,

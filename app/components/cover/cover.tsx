@@ -140,7 +140,6 @@ function Corner({ pos, text }: { pos: "top-left"|"top-right"|"bottom-left"; text
     "bottom-left": "absolute bottom-6 left-5 md:bottom-8 md:left-8",
   }[pos];
 
-  // Sembunyikan top-right & bottom-left di mobile supaya tidak cramped
   const hiddenOnMobile = pos !== "top-left" ? "hidden md:block" : "";
 
   return (
