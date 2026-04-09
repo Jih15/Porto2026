@@ -7,29 +7,24 @@ import { bentoItems } from "./bento.config";
 import BentoCell       from "./BentoCell";
 import ExpandedOverlay from "./ExpandedOverlay";
 import { useBentoExpand } from "./useBentoExpand";
+import { useIsMobile }    from "./useIsMobile";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-/**
- * Bento section: scroll zoom-in + grid of expandable cards.
- * Tidak perlu diedit kecuali ingin mengubah animasi atau layout grid.
- * Untuk menambah/mengubah item → edit bento.config.tsx
- */
 export default function Bento() {
   const sectionRef  = useRef<HTMLDivElement>(null);
   const gridWrapRef = useRef<HTMLDivElement>(null);
 
   const { expanded, open, close } = useBentoExpand();
+  const isMobile = useIsMobile();
 
-  // ── Scroll animations ────────────────────────────────────────────────
   useEffect(() => {
     const section  = sectionRef.current;
     const gridWrap = gridWrapRef.current;
     if (!section || !gridWrap) return;
 
-    // Grid zoom-in on scroll enter
     gsap.fromTo(gridWrap,
-      { scale: 0.72, opacity: 0 },
+      { scale: isMobile ? 0.9 : 0.72, opacity: 0 },
       {
         scale: 1, opacity: 1,
         ease: "expo.out",
@@ -42,7 +37,6 @@ export default function Bento() {
       },
     );
 
-    // Stagger each cell
     const cells = gridWrap.querySelectorAll(".bento-cell");
     gsap.fromTo(cells,
       { opacity: 0, y: 20 },
@@ -59,35 +53,55 @@ export default function Bento() {
     );
 
     return () => ScrollTrigger.getAll().forEach((t) => t.kill());
-  }, []);
+  }, [isMobile]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen flex items-center py-16 px-6"
+      className="relative w-full flex items-start py-16 px-4 md:px-6 md:min-h-screen md:items-center"
       style={{ background: "#080808" }}
     >
       {/* Section label */}
       <div
-        className="absolute top-10 left-1/2 -translate-x-1/2 font-mono text-xs tracking-[0.4em] uppercase"
+        className="absolute top-8 left-1/2 -translate-x-1/2 font-mono text-xs tracking-[0.4em] uppercase"
         style={{ color: "rgba(255,255,255,0.15)" }}
       >
         — Selected Work —
       </div>
 
-      <div ref={gridWrapRef} className="w-full max-w-350 mx-auto">
-        <div
-          className="grid gap-3"
-          style={{
-            gridTemplateColumns: "repeat(9, 1fr)",
-            gridTemplateRows:    "repeat(8, minmax(0, 1fr))",
-            height:              "calc(100vh - 8rem)",
-          }}
-        >
-          {bentoItems.map((item) => (
-            <BentoCell key={item.id} item={item} onExpand={open} />
-          ))}
-        </div>
+      <div ref={gridWrapRef} className="w-full max-w-350 mx-auto mt-10 md:mt-0">
+        {isMobile ? (
+          /* ── MOBILE: single column stack ── */
+          <div className="flex flex-col gap-3">
+            {bentoItems.map((item) => (
+              <BentoCell
+                key={item.id}
+                item={item}
+                onExpand={open}
+                isMobile={true}
+              />
+            ))}
+          </div>
+        ) : (
+          /* ── DESKTOP: 9-col bento grid ── */
+          <div
+            className="grid gap-3"
+            style={{
+              gridTemplateColumns: "repeat(9, 1fr)",
+              gridTemplateRows:    "repeat(8, minmax(0, 1fr))",
+              height:              "calc(100vh - 8rem)",
+            }}
+          >
+            {bentoItems.map((item) => (
+              <BentoCell
+                key={item.id}
+                item={item}
+                onExpand={open}
+                isMobile={false}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <ExpandedOverlay expanded={expanded} onClose={close} />

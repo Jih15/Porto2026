@@ -132,14 +132,19 @@ export default function Cover() {
 }
 
 // ── Helper ────────────────────────────────────────────────────────────────────
+// Ganti fungsi Corner di cover.tsx
 function Corner({ pos, text }: { pos: "top-left"|"top-right"|"bottom-left"; text: string }) {
   const cls = {
-    "top-left":    "absolute top-8 left-8",
-    "top-right":   "absolute top-8 right-8",
-    "bottom-left": "absolute bottom-8 left-8",
+    "top-left":    "absolute top-6 left-5 md:top-8 md:left-8",
+    "top-right":   "absolute top-6 right-5 md:top-8 md:right-8",
+    "bottom-left": "absolute bottom-6 left-5 md:bottom-8 md:left-8",
   }[pos];
+
+  // Sembunyikan top-right & bottom-left di mobile supaya tidak cramped
+  const hiddenOnMobile = pos !== "top-left" ? "hidden md:block" : "";
+
   return (
-    <div className={`${cls} font-mono text-xs tracking-[0.25em] uppercase`} style={{ color: "rgba(255,255,255,0.2)" }}>
+    <div className={`${cls} ${hiddenOnMobile} font-mono text-xs tracking-[0.25em] uppercase`} style={{ color: "rgba(255,255,255,0.2)" }}>
       {text}
     </div>
   );

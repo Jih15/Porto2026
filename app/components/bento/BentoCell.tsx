@@ -7,14 +7,10 @@ import { socialLinks } from "./bento.config";
 type Props = {
   item:     BentoItemDef;
   onExpand: (id: number, rect: DOMRect) => void;
+  isMobile: boolean;
 };
 
-/**
- * Satu card di bento grid.
- * Styling & hover logic ada di sini.
- * Konten yang di-expand ada di masing-masing file items/.
- */
-export default function BentoCell({ item, onExpand }: Props) {
+export default function BentoCell({ item, onExpand, isMobile }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   const handleClick = useCallback(() => {
@@ -22,22 +18,29 @@ export default function BentoCell({ item, onExpand }: Props) {
     onExpand(item.id, ref.current.getBoundingClientRect());
   }, [item, onExpand]);
 
-  // Card khusus contact: tampilkan social links
   const isContact = item.id === 2;
+
+  const mobileStyle = {
+    height:     item.mobileHeight ?? "180px",
+    background: item.bg,
+    border:     "1px solid rgba(255,255,255,0.06)",
+  };
+
+  const desktopStyle = {
+    background: item.bg,
+    border:     "1px solid rgba(255,255,255,0.06)",
+    ...item.gridStyle,
+  };
 
   return (
     <div
       ref={ref}
       className={`bento-cell relative overflow-hidden rounded-2xl ${item.expandable ? "cursor-pointer group" : ""}`}
-      style={{
-        background: item.bg,
-        border: "1px solid rgba(255,255,255,0.06)",
-        ...item.gridStyle,
-      }}
+      style={isMobile ? mobileStyle : desktopStyle}
       onClick={handleClick}
     >
       {isContact ? (
-        <ContactCard />
+        <ContactCard isMobile={isMobile} />
       ) : (
         <DefaultCard item={item} />
       )}
@@ -47,13 +50,20 @@ export default function BentoCell({ item, onExpand }: Props) {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function ContactCard() {
+function ContactCard({ isMobile }: { isMobile: boolean }) {
   return (
-    <div className="absolute inset-0 flex flex-col justify-between p-5">
-      <div className="font-mono text-xs tracking-[0.25em] uppercase" style={{ color: "rgba(8,8,8,0.5)" }}>
+    <div
+      className={`absolute inset-0 flex ${
+        isMobile ? "flex-row items-center justify-between" : "flex-col justify-between"
+      } p-5`}
+    >
+      <div
+        className="font-mono text-xs tracking-[0.25em] uppercase"
+        style={{ color: "rgba(8,8,8,0.5)" }}
+      >
         Connect
       </div>
-      <div className="flex flex-col gap-2">
+      <div className={`flex ${isMobile ? "flex-row gap-6" : "flex-col gap-2"}`}>
         {socialLinks.map((s) => (
           <a
             key={s.label}
@@ -103,13 +113,12 @@ function DefaultCard({ item }: { item: BentoItemDef }) {
         )}
       </div>
 
-      {/* Hover highlight */}
       {item.expandable && (
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
           style={{
-            background: "rgba(184,255,63,0.04)",
-            border: "1px solid rgba(184,255,63,0.2)",
+            background:   "rgba(184,255,63,0.04)",
+            border:       "1px solid rgba(184,255,63,0.2)",
             borderRadius: "inherit",
           }}
         />
