@@ -8,27 +8,27 @@ const TECHS = [
   {
     name: "Flutter",
     icon: `${images.flutter}`,
-    desc: "Cross-platform mobile framework dari Google untuk build iOS & Android dari satu codebase.",
+    desc: "GetX State Management, Responsive UI, Clean Architecture.",
   },
   {
     name: "Next.js",
     icon: `${images.nextjs}`,
-    desc: "React framework production-ready dengan SSR, SSG, dan App Router untuk web modern.",
+    desc: "Make web applications with React and Node.js.",
   },
   {
     name: "Laravel",
     icon: `${images.laravel}`,
-    desc: "PHP framework elegant dengan ekosistem lengkap untuk backend & API development.",
+    desc: "Membuat aplikasi web dengan PHP.",
   },
   {
     name: "FastAPI",
     icon: `${images.fastapi}`,
-    desc: "Modern monolith — jembatan antara Laravel backend dan React frontend tanpa REST API.",
+    desc: "Membuat API RESTful dengan Python dan menambahkan machine learning.",
   },
   {
     name: "Figma",
     icon: `${images.figma}`,
-    desc: "Design tool kolaboratif untuk UI/UX, prototyping, dan developer handoff.",
+    desc: "Design UI/UX, prototyping, dan developer handoff.",
   },
 ];
 
