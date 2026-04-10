@@ -169,7 +169,7 @@ interface HorizontalTimelineProps {
 function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
   return (
     <div
-      className="flex sm:hidden flex-col px-5 pt-8"
+      className="flex sm:hidden flex-col px-5 pt-20"
       style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
     >
       <span
