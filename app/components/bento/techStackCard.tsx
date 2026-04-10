@@ -8,17 +8,17 @@ const TECHS = [
   {
     name: "Flutter",
     icon: `${images.flutter}`,
-    desc: "GetX State Management, Responsive UI, Clean Architecture.",
+    desc: "Mengembangkan aplikasi mobile yang responsif dengan pengelolaan state yang baik, integrasi API, serta fokus pada performa dan pengalaman pengguna.",
   },
   {
     name: "Next.js",
     icon: `${images.nextjs}`,
-    desc: "Make web applications with React and Node.js.",
+    desc: "Membangun aplikasi web modern menggunakan SSR dan routing dinamis.",
   },
   {
     name: "Laravel",
     icon: `${images.laravel}`,
-    desc: "Membuat aplikasi web dengan PHP.",
+    desc: "Membangun aplikasi backend menggunakan arsitektur MVC, pengelolaan database yang efisien, serta pengembangan API dan tampilan dengan Blade.",
   },
   {
     name: "FastAPI",
@@ -28,7 +28,7 @@ const TECHS = [
   {
     name: "Figma",
     icon: `${images.figma}`,
-    desc: "Design UI/UX, prototyping, dan developer handoff.",
+    desc: "Mendesain antarmuka pengguna yang intuitif dengan pendekatan UI/UX, membuat prototype interaktif, serta berkolaborasi dalam perancangan layout yang konsisten.",
   },
 ];
 

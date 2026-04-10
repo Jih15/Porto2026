@@ -1,14 +1,14 @@
 const ACADEMICS = [
   {
-    year: "2022 – Now",
-    degree: "S1 Teknik Informatika",
-    institution: "Universitas Nama",
+    year: "2021 – 2025",
+    degree: "D4 - Teknologi Rekayasa Perangkat Lunak",
+    institution: "Politeknik Negeri Padang",
     desc: "Fokus pada software engineering, algoritma, dan pengembangan aplikasi.",
   },
   {
-    year: "2019 – 2022",
-    degree: "SMA IPA",
-    institution: "SMA Nama Sekolah",
+    year: "2017 – 2020",
+    degree: "MA - Ilmu Pengetahuan Alam",
+    institution: "MAN 1 Bukittinggi",
     desc: "Jurusan Ilmu Pengetahuan Alam dengan prestasi bidang komputer.",
   },
 ];

@@ -2,7 +2,7 @@
  * Edit kontak di sini.
  */
 const CONTACT = {
-  email: "your@email.com",
+  email: "zaqazaqaul@gmail.com",
 };
 
 export default function ContactContent() {
