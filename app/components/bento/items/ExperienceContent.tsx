@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
+// import images from "@/public/images";
 
 interface Experience {
   number: string;
@@ -28,7 +29,8 @@ const EXPERIENCES: Experience[] = [
       "Implementing UI and features based on business requirements",
       "Collaborating with the team to ensure the app runs as expected",
     ],
-    photo: null,
+    // photo: images.mediatama,
+    photo: null
   },
   {
     number: "2",

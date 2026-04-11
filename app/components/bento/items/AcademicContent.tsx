@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import Image from "next/image";
+import photos from "@/public/assets/photo/photo";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const ACADEMICS = [
@@ -21,14 +22,14 @@ const ACADEMICS = [
 ];
 
 const PHOTOS: { src: string | null; alt: string }[] = [
-  { src: null, alt: "Photo 1" },
-  { src: null, alt: "Photo 2" },
-  { src: null, alt: "Photo 3" },
-  { src: null, alt: "Photo 4" },
-  { src: null, alt: "Photo 5" },
-  { src: null, alt: "Photo 6" },
-  { src: null, alt: "Photo 7" },
-  { src: null, alt: "Photo 8" },
+  { src: photos.img1, alt: "Photo 1" },
+  { src: photos.img2, alt: "Photo 2" },
+  { src: photos.img3, alt: "Photo 3" },
+  { src: photos.img4, alt: "Photo 4" },
+  { src: photos.img5, alt: "Photo 5" },
+  { src: photos.img6, alt: "Photo 6" },
+  { src: photos.img7, alt: "Photo 7" },
+  { src: photos.img8, alt: "Photo 8" },
 ];
 
 /* ── Photo grid tile ──────────────────────────────────────────── */
