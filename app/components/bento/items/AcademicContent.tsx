@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
+import Image from "next/image";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const ACADEMICS = [
@@ -173,7 +174,8 @@ function ScrollRow({ photos, direction = "left", speed = 35 }: ScrollRowProps) {
             }}
           >
             {photo.src
-              ? <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover" />
+              // ? <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover" />
+              ? <Image src={photo.src} alt={photo.alt} width={80} height={80} className="object-cover" />
               : <div className="w-full h-full" />}
           </div>
         ))}
@@ -190,57 +192,66 @@ export default function AcademicContent() {
   const col3 = PHOTOS.slice(4, 8);
 
   useEffect(() => {
-    const D = 0.68; // sync dengan overlay expand
+    const D = 0.68;
+    const root = rootRef.current;
+    if (!root) return;
 
-    const ctx = gsap.context(() => {
+    // RAF memastikan DOM sudah fully committed sebelum GSAP mencari elemen
+    const raf = requestAnimationFrame(() => {
+      // Helper: query hanya jika ada hasilnya
+      const q = (sel: string) => {
+        const els = root.querySelectorAll(sel);
+        return els.length ? els : null;
+      };
 
       /* ════════════════════════════════════
          DESKTOP animations
       ════════════════════════════════════ */
       const tl = gsap.timeline({ delay: D });
 
-      // Label slide dari kiri
-      tl.fromTo(
-        "[data-anim='ac-label']",
+      const acLabel   = q("[data-anim='ac-label']");
+      // const acBar     = q("[data-anim='ac-bar']");
+      const acYear    = q("[data-anim='ac-year']");
+      const acEntry   = q("[data-anim='ac-entry']");
+      const acDivider = q("[data-anim='ac-divider']");
+      const photoCols = q("[data-anim='photo-col']");
+
+      if (acLabel) tl.fromTo(
+        acLabel,
         { x: -28, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.6, ease: "power4.out" },
       );
 
-      // Accent bar tahun: draw dari atas (scaleY)
-      tl.fromTo(
-        "[data-anim='ac-bar']",
-        { scaleY: 0, transformOrigin: "top center" },
-        { scaleY: 1, duration: 0.55, stagger: 0.18, ease: "expo.out" },
-        "-=0.3",
-      );
+      // if (acBar) tl.fromTo(
+      //   acBar,
+      //   { scaleY: 0, transformOrigin: "top center" },
+      //   { scaleY: 1, duration: 0.55, stagger: 0.18, ease: "expo.out" },
+      //   "-=0.3",
+      // );
 
-      // Year tags: slide dari kiri
-      tl.fromTo(
-        "[data-anim='ac-year']",
+      if (acYear) tl.fromTo(
+        acYear,
         { x: -20, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.5, stagger: 0.18, ease: "power3.out" },
         "<",
       );
 
-      // Entry text content: stagger slide up
-      tl.fromTo(
-        "[data-anim='ac-entry']",
+      if (acEntry) tl.fromTo(
+        acEntry,
         { y: 24, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, stagger: 0.18, ease: "power3.out" },
         "-=0.35",
       );
 
-      // Divider line antara entries
-      tl.fromTo(
-        "[data-anim='ac-divider']",
+      if (acDivider) tl.fromTo(
+        acDivider,
         { scaleX: 0, transformOrigin: "left center" },
         { scaleX: 1, duration: 0.6, ease: "expo.out" },
         "-=0.5",
       );
 
-      // Photo columns: cascade masuk dari bawah, satu per satu
-      tl.fromTo(
-        "[data-anim='photo-col']",
+      if (photoCols) tl.fromTo(
+        photoCols,
         { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.7, stagger: 0.14, ease: "power3.out" },
         "-=0.55",
@@ -250,37 +261,37 @@ export default function AcademicContent() {
          MOBILE animations
       ════════════════════════════════════ */
 
-      // Label mobile
-      gsap.fromTo(
-        "[data-anim='m-ac-label']",
+      const mLabel  = q("[data-anim='m-ac-label']");
+      const mEntry  = q("[data-anim='m-ac-entry']");
+      const mStrip  = q("[data-anim='m-strip']");
+      const mFooter = q("[data-anim='m-footer']");
+
+      if (mLabel) gsap.fromTo(
+        mLabel,
         { y: -16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", delay: D },
       );
 
-      // Entry cards: stagger dari bawah
-      gsap.fromTo(
-        "[data-anim='m-ac-entry']",
+      if (mEntry) gsap.fromTo(
+        mEntry,
         { y: 32, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.65, stagger: 0.2, ease: "power4.out", delay: D + 0.15 },
       );
 
-      // Horizontal photo strips: fade in satu-satu
-      gsap.fromTo(
-        "[data-anim='m-strip']",
+      if (mStrip) gsap.fromTo(
+        mStrip,
         { opacity: 0, x: -20 },
         { opacity: 1, x: 0, duration: 0.6, stagger: 0.2, ease: "power3.out", delay: D + 0.5 },
       );
 
-      // Footer mobile
-      gsap.fromTo(
-        "[data-anim='m-footer']",
+      if (mFooter) gsap.fromTo(
+        mFooter,
         { opacity: 0 },
         { opacity: 1, duration: 0.6, ease: "power2.out", delay: D + 0.8 },
       );
+    });
 
-    }, rootRef);
-
-    return () => ctx.revert();
+    return () => cancelAnimationFrame(raf);
   }, []);
 
   return (
@@ -395,13 +406,13 @@ export default function AcademicContent() {
             {ACADEMICS.map((ac, i) => (
               <div key={i}>
                 {/* Divider atas (hanya untuk entry ke-2 dst) */}
-                {i > 0 && (
+                {/* {i > 0 && (
                   <div
                     data-anim="ac-divider"
                     className="mb-10"
                     style={{ height: "1px", background: "rgba(255,255,255,0.06)" }}
                   />
-                )}
+                )} */}
 
                 <div className="flex gap-6">
                   {/* Accent bar kiri + year */}
