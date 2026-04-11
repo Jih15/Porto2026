@@ -30,6 +30,8 @@ const PHOTOS: { src: string | null; alt: string }[] = [
   { src: photos.img6, alt: "Photo 6" },
   { src: photos.img7, alt: "Photo 7" },
   { src: photos.img8, alt: "Photo 8" },
+  { src: photos.img9, alt: "Photo 9" },
+  { src: photos.img10, alt: "Photo 10" },
 ];
 
 /* ── Photo grid tile ──────────────────────────────────────────── */
@@ -190,7 +192,7 @@ export default function AcademicContent() {
   const rootRef     = useRef<HTMLDivElement>(null);
   const col1 = PHOTOS.slice(0, 4);
   const col2 = PHOTOS.slice(2, 6);
-  const col3 = PHOTOS.slice(4, 8);
+  const col3 = PHOTOS.slice(4, 10);
 
   useEffect(() => {
     const D = 0.68;
