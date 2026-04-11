@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+import gsap from "gsap";
 
 interface Experience {
   number: string;
@@ -57,7 +58,6 @@ const EXPERIENCES: Experience[] = [
 ];
 
 /* ─── TimelineDot ─────────────────────────────────────────────── */
-
 interface DotProps {
   label: string;
   isActive: boolean;
@@ -67,8 +67,9 @@ interface DotProps {
 function TimelineDot({ label, isActive, onClick }: DotProps) {
   return (
     <button
+      data-anim="dot"
       onClick={onClick}
-      className="shrink-0 flex items-center justify-center rounded-full font-mono text-xs font-bold transition-all duration-300"
+      className="shrink-0 flex items-center justify-center rounded-full font-mono text-xs font-bold transition-colors duration-300"
       style={{
         width: 32,
         height: 32,
@@ -84,7 +85,6 @@ function TimelineDot({ label, isActive, onClick }: DotProps) {
 }
 
 /* ─── Desktop vertical sidebar ───────────────────────────────── */
-
 interface VerticalTimelineProps {
   active: number;
   onSelect: (i: number) => void;
@@ -93,6 +93,7 @@ interface VerticalTimelineProps {
 function VerticalTimeline({ active, onSelect }: VerticalTimelineProps) {
   return (
     <div
+      data-anim="sidebar"
       className="hidden sm:flex flex-col shrink-0 pt-44 px-8 md:px-10"
       style={{
         width: "clamp(220px, 28%, 320px)",
@@ -100,6 +101,7 @@ function VerticalTimeline({ active, onSelect }: VerticalTimelineProps) {
       }}
     >
       <span
+        data-anim="tl-label"
         className="font-mono text-xs tracking-[0.35em] uppercase mb-10"
         style={{ color: "#b8ff3f" }}
       >
@@ -120,16 +122,19 @@ function VerticalTimeline({ active, onSelect }: VerticalTimelineProps) {
                 />
                 {!isLast && (
                   <div
+                    data-anim="v-connector"
                     className="flex-1 my-1"
                     style={{
                       width: 0,
                       borderLeft: "1.5px dashed rgba(184,255,63,0.22)",
+                      transformOrigin: "top center",
                     }}
                   />
                 )}
               </div>
 
               <div
+                data-anim="entry-text"
                 className="cursor-pointer pb-8"
                 style={{ paddingTop: 5 }}
                 onClick={() => onSelect(i)}
@@ -160,7 +165,6 @@ function VerticalTimeline({ active, onSelect }: VerticalTimelineProps) {
 }
 
 /* ─── Mobile horizontal timeline ─────────────────────────────── */
-
 interface HorizontalTimelineProps {
   active: number;
   onSelect: (i: number) => void;
@@ -173,13 +177,13 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
       style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
     >
       <span
+        data-anim="tl-label"
         className="font-mono text-xs tracking-[0.35em] uppercase mb-5"
         style={{ color: "#b8ff3f" }}
       >
         Work Experience
       </span>
 
-      {/* Dots row + Labels row — same grid so columns are identical width */}
       <div
         style={{
           display: "grid",
@@ -187,7 +191,7 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
           position: "relative",
         }}
       >
-        {/* Row 1: dots with per-segment connectors */}
+        {/* Row 1: dots with connectors */}
         {EXPERIENCES.map((e, i) => {
           const isActive = i === active;
           const isLast = i === EXPERIENCES.length - 1;
@@ -202,9 +206,9 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
                 isActive={isActive}
                 onClick={() => onSelect(i)}
               />
-              {/* connector goes from right edge of this dot to left edge of next dot */}
               {!isLast && (
                 <div
+                  data-anim="h-connector"
                   style={{
                     position: "absolute",
                     top: "50%",
@@ -213,6 +217,7 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
                     borderTop: "1.5px dashed rgba(184,255,63,0.22)",
                     height: 0,
                     transform: "translateY(-50%)",
+                    transformOrigin: "left center",
                     pointerEvents: "none",
                   }}
                 />
@@ -227,6 +232,7 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
           return (
             <div
               key={`label-${e.number}`}
+              data-anim="entry-text"
               className="cursor-pointer pt-2 pb-4"
               onClick={() => onSelect(i)}
             >
@@ -258,7 +264,6 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
 }
 
 /* ─── Detail panel ────────────────────────────────────────────── */
-
 interface DetailPanelProps {
   exp: Experience;
 }
@@ -336,23 +341,115 @@ function DetailPanel({ exp }: DetailPanelProps) {
 }
 
 /* ─── Root ────────────────────────────────────────────────────── */
-
 export default function ExperienceContent() {
-  const [active, setActive] = useState<number>(0);
+  const [active, setActive]   = useState<number>(0);
+  const rootRef               = useRef<HTMLDivElement>(null);
+  const detailWrapRef         = useRef<HTMLDivElement>(null);
+  const dirRef                = useRef<number>(1); // arah slide tab: 1 = bawah→atas, -1 = atas→bawah
+  const isFirstRender         = useRef<boolean>(true);
+
+  /* ── Entrance animation ─────────────────────────────────────── */
+  useEffect(() => {
+    const D = 0.68;
+
+    const ctx = gsap.context(() => {
+
+      const tl = gsap.timeline({ delay: D });
+
+      // Label fade in dari atas
+      tl.fromTo(
+        "[data-anim='tl-label']",
+        { y: -16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" },
+      );
+
+      // Dots: bounce scale in dengan stagger
+      tl.fromTo(
+        "[data-anim='dot']",
+        { scale: 0, opacity: 0, transformOrigin: "center center" },
+        { scale: 1, opacity: 1, duration: 0.55, stagger: 0.13, ease: "back.out(2.2)" },
+        "-=0.3",
+      );
+
+      // Vertical connectors: draw dari atas ke bawah
+      tl.fromTo(
+        "[data-anim='v-connector']",
+        { scaleY: 0, transformOrigin: "top center" },
+        { scaleY: 1, duration: 0.5, stagger: 0.12, ease: "power3.out" },
+        "-=0.4",
+      );
+
+      // Horizontal connectors: draw dari kiri ke kanan
+      tl.fromTo(
+        "[data-anim='h-connector']",
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 1, duration: 0.5, stagger: 0.12, ease: "power3.out" },
+        "<",
+      );
+
+      // Entry texts: slide dari kiri
+      tl.fromTo(
+        "[data-anim='entry-text']",
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: "power3.out" },
+        "-=0.5",
+      );
+
+      // Detail panel: slide dari kanan
+      tl.fromTo(
+        detailWrapRef.current,
+        { x: 40, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+        "-=0.6",
+      );
+
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  /* ── Tab switch animation ───────────────────────────────────── */
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    if (!detailWrapRef.current) return;
+
+    // Slide masuk dari atas atau bawah sesuai arah pemilihan
+    gsap.fromTo(
+      detailWrapRef.current,
+      { y: dirRef.current * 30, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
+    );
+  }, [active]);
+
+  /* ── Select handler ─────────────────────────────────────────── */
+  const handleSelect = useCallback((i: number) => {
+    if (i === active) return;
+    dirRef.current = i > active ? 1 : -1;
+    setActive(i);
+  }, [active]);
+
   const exp = EXPERIENCES[active];
 
   return (
     <div
+      ref={rootRef}
       className="relative w-full flex flex-col"
       style={{ background: "#0d0d0d", minHeight: "100vh" }}
     >
-      {/* Mobile: horizontal timeline sits above everything */}
-      <HorizontalTimeline active={active} onSelect={setActive} />
+      {/* Mobile: horizontal timeline */}
+      <HorizontalTimeline active={active} onSelect={handleSelect} />
 
-      {/* Desktop: sidebar + detail side by side */}
+      {/* Desktop: sidebar + detail */}
       <div className="flex flex-1 overflow-hidden" style={{ minHeight: 0 }}>
-        <VerticalTimeline active={active} onSelect={setActive} />
-        <DetailPanel exp={exp} />
+        <VerticalTimeline active={active} onSelect={handleSelect} />
+
+        {/* Detail panel wrapper — ref untuk tab animation */}
+        <div ref={detailWrapRef} className="flex flex-col flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+          <DetailPanel exp={exp} />
+        </div>
       </div>
 
       {/* Footer */}

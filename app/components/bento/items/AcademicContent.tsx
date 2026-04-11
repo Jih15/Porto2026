@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import gsap from "gsap";
 
 /* ── Data ─────────────────────────────────────────────────────── */
 const ACADEMICS = [
@@ -43,11 +44,7 @@ function PhotoTile({ item }: { item: { src: string | null; alt: string } }) {
     >
       {item.src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={item.src}
-          alt={item.alt}
-          className="w-full h-full object-cover"
-        />
+        <img src={item.src} alt={item.alt} className="w-full h-full object-cover" />
       ) : (
         <div className="w-full h-full" />
       )}
@@ -55,7 +52,7 @@ function PhotoTile({ item }: { item: { src: string | null; alt: string } }) {
   );
 }
 
-/* ── Scrolling column ─────────────────────────────────────────── */
+/* ── Scrolling column (vertical) ──────────────────────────────── */
 interface ScrollColProps {
   photos: typeof PHOTOS;
   direction?: "up" | "down";
@@ -64,8 +61,6 @@ interface ScrollColProps {
 
 function ScrollCol({ photos, direction = "up", speed = 40 }: ScrollColProps) {
   const trackRef = useRef<HTMLDivElement>(null);
-
-  // Duplikasi tile untuk seamless loop
   const tiles = [...photos, ...photos];
 
   useEffect(() => {
@@ -76,24 +71,12 @@ function ScrollCol({ photos, direction = "up", speed = 40 }: ScrollColProps) {
     let lastTime: number | null = null;
     let raf: number;
 
-
     function tick(now: number) {
-      if (!lastTime) {
-        lastTime = now;
-        raf = requestAnimationFrame(tick);
-        return;
-      }
-
+      if (!lastTime) { lastTime = now; raf = requestAnimationFrame(tick); return; }
       const dt = (now - lastTime) / 1000;
       lastTime = now;
-
       const oneSet = track!.scrollHeight / 2;
-
-      if (oneSet === 0) {
-        raf = requestAnimationFrame(tick);
-        return;
-      }
-
+      if (oneSet === 0) { raf = requestAnimationFrame(tick); return; }
       if (direction === "up") {
         y -= speed * dt;
         if (y <= -oneSet) y += oneSet;
@@ -101,7 +84,6 @@ function ScrollCol({ photos, direction = "up", speed = 40 }: ScrollColProps) {
         y += speed * dt;
         if (y >= 0) y -= oneSet;
       }
-
       track!.style.transform = `translateY(${y}px)`;
       raf = requestAnimationFrame(tick);
     }
@@ -114,17 +96,86 @@ function ScrollCol({ photos, direction = "up", speed = 40 }: ScrollColProps) {
       });
     });
 
-    return () => {
-      cancelAnimationFrame(initRaf);
-      cancelAnimationFrame(raf);
-    };
+    return () => { cancelAnimationFrame(initRaf); cancelAnimationFrame(raf); };
   }, [direction, speed]);
 
   return (
     <div className="overflow-hidden flex-1" style={{ minHeight: 0 }}>
       <div ref={trackRef} className="flex flex-col gap-3" style={{ willChange: "transform" }}>
+        {tiles.map((photo, i) => <PhotoTile key={i} item={photo} />)}
+      </div>
+    </div>
+  );
+}
+
+/* ── Scrolling row (horizontal — mobile) ──────────────────────── */
+interface ScrollRowProps {
+  photos: typeof PHOTOS;
+  direction?: "left" | "right";
+  speed?: number;
+}
+
+function ScrollRow({ photos, direction = "left", speed = 35 }: ScrollRowProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const tiles = [...photos, ...photos];
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    let x = 0;
+    let lastTime: number | null = null;
+    let raf: number;
+
+    function tick(now: number) {
+      if (!lastTime) { lastTime = now; raf = requestAnimationFrame(tick); return; }
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+      const oneSet = track!.scrollWidth / 2;
+      if (oneSet === 0) { raf = requestAnimationFrame(tick); return; }
+      if (direction === "left") {
+        x -= speed * dt;
+        if (x <= -oneSet) x += oneSet;
+      } else {
+        x += speed * dt;
+        if (x >= 0) x -= oneSet;
+      }
+      track!.style.transform = `translateX(${x}px)`;
+      raf = requestAnimationFrame(tick);
+    }
+
+    const initRaf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const oneSet = track!.scrollWidth / 2;
+        if (direction === "right") x = -oneSet;
+        raf = requestAnimationFrame(tick);
+      });
+    });
+
+    return () => { cancelAnimationFrame(initRaf); cancelAnimationFrame(raf); };
+  }, [direction, speed]);
+
+  return (
+    <div className="overflow-hidden w-full">
+      <div
+        ref={trackRef}
+        className="flex flex-row gap-3"
+        style={{ willChange: "transform", width: "max-content" }}
+      >
         {tiles.map((photo, i) => (
-          <PhotoTile key={i} item={photo} />
+          <div
+            key={i}
+            className="rounded-xl overflow-hidden shrink-0"
+            style={{
+              width: 80, height: 80,
+              background: photo.src ? "transparent" : "rgba(255,255,255,0.07)",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            {photo.src
+              ? <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover" />
+              : <div className="w-full h-full" />}
+          </div>
         ))}
       </div>
     </div>
@@ -133,49 +184,148 @@ function ScrollCol({ photos, direction = "up", speed = 40 }: ScrollColProps) {
 
 /* ── Root ─────────────────────────────────────────────────────── */
 export default function AcademicContent() {
+  const rootRef     = useRef<HTMLDivElement>(null);
   const col1 = PHOTOS.slice(0, 4);
   const col2 = PHOTOS.slice(2, 6);
   const col3 = PHOTOS.slice(4, 8);
 
+  useEffect(() => {
+    const D = 0.68; // sync dengan overlay expand
+
+    const ctx = gsap.context(() => {
+
+      /* ════════════════════════════════════
+         DESKTOP animations
+      ════════════════════════════════════ */
+      const tl = gsap.timeline({ delay: D });
+
+      // Label slide dari kiri
+      tl.fromTo(
+        "[data-anim='ac-label']",
+        { x: -28, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, ease: "power4.out" },
+      );
+
+      // Accent bar tahun: draw dari atas (scaleY)
+      tl.fromTo(
+        "[data-anim='ac-bar']",
+        { scaleY: 0, transformOrigin: "top center" },
+        { scaleY: 1, duration: 0.55, stagger: 0.18, ease: "expo.out" },
+        "-=0.3",
+      );
+
+      // Year tags: slide dari kiri
+      tl.fromTo(
+        "[data-anim='ac-year']",
+        { x: -20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.18, ease: "power3.out" },
+        "<",
+      );
+
+      // Entry text content: stagger slide up
+      tl.fromTo(
+        "[data-anim='ac-entry']",
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, stagger: 0.18, ease: "power3.out" },
+        "-=0.35",
+      );
+
+      // Divider line antara entries
+      tl.fromTo(
+        "[data-anim='ac-divider']",
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 1, duration: 0.6, ease: "expo.out" },
+        "-=0.5",
+      );
+
+      // Photo columns: cascade masuk dari bawah, satu per satu
+      tl.fromTo(
+        "[data-anim='photo-col']",
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.14, ease: "power3.out" },
+        "-=0.55",
+      );
+
+      /* ════════════════════════════════════
+         MOBILE animations
+      ════════════════════════════════════ */
+
+      // Label mobile
+      gsap.fromTo(
+        "[data-anim='m-ac-label']",
+        { y: -16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", delay: D },
+      );
+
+      // Entry cards: stagger dari bawah
+      gsap.fromTo(
+        "[data-anim='m-ac-entry']",
+        { y: 32, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65, stagger: 0.2, ease: "power4.out", delay: D + 0.15 },
+      );
+
+      // Horizontal photo strips: fade in satu-satu
+      gsap.fromTo(
+        "[data-anim='m-strip']",
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.6, stagger: 0.2, ease: "power3.out", delay: D + 0.5 },
+      );
+
+      // Footer mobile
+      gsap.fromTo(
+        "[data-anim='m-footer']",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: "power2.out", delay: D + 0.8 },
+      );
+
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div
-      className="relative w-full flex overflow-hidden"
+      ref={rootRef}
+      className="relative w-full"
       style={{ background: "#0d0d0d", minHeight: "100vh", height: "100%" }}
     >
-      {/* ── LEFT: Academic list ── */}
-      <div
-        className="flex flex-col justify-center shrink-0 px-10 md:px-14 py-5.5"
-        style={{ width: "clamp(280px, 42%, 520px)" }}
-      >
+
+      {/* ══════════════════════════════════
+          MOBILE layout (< md)
+      ══════════════════════════════════ */}
+      <div className="flex flex-col md:hidden min-h-screen">
+
         {/* Label */}
-        <span
-          className="font-mono text-xs tracking-[0.35em] uppercase mb-10 pt-48"
-          style={{ color: "#b8ff3f" }}
-        >
-          Education
-        </span>
+        <div data-anim="m-ac-label" className="px-6 pt-16 pb-2">
+          <span
+            className="font-mono text-xs tracking-[0.35em] uppercase"
+            style={{ color: "#b8ff3f" }}
+          >
+            Education
+          </span>
+        </div>
 
-        {/* Entries */}
-        <div className="flex flex-col gap-10">
+        {/* Academic entries */}
+        <div className="flex flex-col gap-8 px-6 pt-4 pb-6">
           {ACADEMICS.map((ac, i) => (
-            <div key={i} className="flex gap-6">
-              {/* Year */}
-              <span
-                className="font-mono text-xs shrink-0 pt-1 tracking-wide"
-                style={{ color: "#b8ff3f", minWidth: 88 }}
-              >
-                {ac.year}
-              </span>
-
-              {/* Content */}
+            <div key={i} data-anim="m-ac-entry" className="flex gap-4">
+              {/* Accent bar */}
+              <div
+                className="shrink-0 mt-1"
+                style={{
+                  width: 2,
+                  background: "rgba(184,255,63,0.3)",
+                  borderRadius: 2,
+                  alignSelf: "stretch",
+                }}
+              />
               <div className="flex flex-col gap-1">
+                <span className="font-mono text-xs tracking-wide" style={{ color: "#b8ff3f" }}>
+                  {ac.year}
+                </span>
                 <p
                   className="font-bold leading-snug m-0"
-                  style={{
-                    color: "#fff",
-                    fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
-                    letterSpacing: "-0.01em",
-                  }}
+                  style={{ color: "#fff", fontSize: "1rem", letterSpacing: "-0.01em" }}
                 >
                   {ac.degree}
                 </p>
@@ -186,7 +336,7 @@ export default function AcademicContent() {
                   {ac.institution}
                 </p>
                 <p
-                  className="text-sm leading-relaxed mt-2 m-0"
+                  className="text-sm leading-relaxed mt-1 m-0"
                   style={{ color: "rgba(255,255,255,0.3)" }}
                 >
                   {ac.desc}
@@ -196,67 +346,171 @@ export default function AcademicContent() {
           ))}
         </div>
 
+        {/* Horizontal scrolling photo strips */}
+        <div className="flex flex-col gap-3 pb-6 overflow-hidden">
+          <div data-anim="m-strip">
+            <ScrollRow photos={PHOTOS.slice(0, 6)} direction="left"  speed={30} />
+          </div>
+          <div data-anim="m-strip">
+            <ScrollRow photos={PHOTOS.slice(2, 8)} direction="right" speed={24} />
+          </div>
+        </div>
+
         {/* Footer */}
         <div
-          className="mt-auto pt-32 font-mono text-xs tracking-[0.25em] uppercase"
-          style={{ color: "rgba(255,255,255,0.12)" }}
+          data-anim="m-footer"
+          className="mt-auto px-6 py-5 font-mono text-xs tracking-[0.25em] uppercase"
+          style={{
+            color: "rgba(255,255,255,0.12)",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+          }}
         >
           2026 Zaqaul – All Right Reserved
         </div>
       </div>
 
-      {/* ── RIGHT: Scrolling photo grid ── */}
+
+      {/* ══════════════════════════════════
+          DESKTOP layout (≥ md)
+      ══════════════════════════════════ */}
       <div
-        className="flex-1 flex gap-3 p-0 overflow-hidden"
-        style={{ minHeight: 0 }}
+        className="hidden md:flex overflow-hidden"
+        style={{ minHeight: "100vh", height: "100%" }}
       >
-        <div className="flex flex-col flex-1 gap-3 overflow-hidden">
-          <ScrollCol photos={col1} direction="up" speed={35} />
+
+        {/* LEFT: Academic list */}
+        <div
+          className="flex flex-col shrink-0 px-10 md:px-14 py-5"
+          style={{ width: "clamp(280px, 42%, 520px)" }}
+        >
+          <span
+            data-anim="ac-label"
+            className="font-mono text-xs tracking-[0.35em] uppercase mb-10 pt-32"
+            style={{ color: "#b8ff3f" }}
+          >
+            Education
+          </span>
+
+          <div className="flex flex-col gap-10">
+            {ACADEMICS.map((ac, i) => (
+              <div key={i}>
+                {/* Divider atas (hanya untuk entry ke-2 dst) */}
+                {i > 0 && (
+                  <div
+                    data-anim="ac-divider"
+                    className="mb-10"
+                    style={{ height: "1px", background: "rgba(255,255,255,0.06)" }}
+                  />
+                )}
+
+                <div className="flex gap-6">
+                  {/* Accent bar kiri + year */}
+                  <div className="flex flex-col items-center gap-2 shrink-0" style={{ minWidth: 88 }}>
+                    {/* <div
+                      data-anim="ac-bar"
+                      style={{
+                        width: 2,
+                        height: 48,
+                        background: "rgba(184,255,63,0.35)",
+                        borderRadius: 2,
+                        alignSelf: "flex-start",
+                      }}
+                    /> */}
+                    <span
+                      data-anim="ac-year"
+                      className="font-mono text-xs tracking-wide"
+                      style={{ color: "#b8ff3f" }}
+                    >
+                      {ac.year}
+                    </span>
+                  </div>
+
+                  {/* Content */}
+                  <div data-anim="ac-entry" className="flex flex-col gap-1">
+                    <p
+                      className="font-bold leading-snug m-0"
+                      style={{
+                        color: "#fff",
+                        fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {ac.degree}
+                    </p>
+                    <p
+                      className="font-mono text-xs tracking-wide m-0"
+                      style={{ color: "rgba(255,255,255,0.4)" }}
+                    >
+                      {ac.institution}
+                    </p>
+                    <p
+                      className="text-sm leading-relaxed mt-2 m-0"
+                      style={{ color: "rgba(255,255,255,0.3)" }}
+                    >
+                      {ac.desc}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div
+            className="mt-auto pt-24 font-mono text-xs tracking-[0.25em] uppercase"
+            style={{ color: "rgba(255,255,255,0.12)" }}
+          >
+            2026 Zaqaul – All Right Reserved
+          </div>
         </div>
-        <div className="flex flex-col flex-1 gap-3 overflow-hidden">
-          <ScrollCol photos={col2} direction="down" speed={28} />
+
+        {/* RIGHT: Scrolling photo grid */}
+        <div className="flex-1 flex gap-3 p-0 overflow-hidden" style={{ minHeight: 0 }}>
+          <div data-anim="photo-col" className="flex flex-col flex-1 gap-3 overflow-hidden">
+            <ScrollCol photos={col1} direction="up"   speed={35} />
+          </div>
+          <div data-anim="photo-col" className="flex flex-col flex-1 gap-3 overflow-hidden">
+            <ScrollCol photos={col2} direction="down" speed={28} />
+          </div>
+          <div data-anim="photo-col" className="flex flex-col flex-1 gap-3 overflow-hidden">
+            <ScrollCol photos={col3} direction="up"   speed={42} />
+          </div>
         </div>
-        <div className="flex flex-col flex-1 gap-3 overflow-hidden">
-          <ScrollCol photos={col3} direction="up" speed={42} />
-        </div>
+
+        {/* Fade overlays */}
+        <div
+          className="absolute top-0 bottom-0 pointer-events-none"
+          style={{
+            left: "clamp(280px, 42%, 520px)",
+            width: 60,
+            background: "linear-gradient(to right, #0d0d0d, transparent)",
+            zIndex: 2,
+          }}
+        />
+        <div
+          className="absolute right-0 top-0 h-16 pointer-events-none"
+          style={{
+            left: "clamp(280px, 42%, 520px)",
+            background: "linear-gradient(to bottom, #0d0d0d, transparent)",
+            zIndex: 2,
+          }}
+        />
+        <div
+          className="absolute right-0 bottom-0 h-16 pointer-events-none"
+          style={{
+            left: "clamp(280px, 42%, 520px)",
+            background: "linear-gradient(to top, #0d0d0d, transparent)",
+            zIndex: 2,
+          }}
+        />
+        <div
+          className="absolute top-0 bottom-0 right-0 w-16 pointer-events-none"
+          style={{
+            background: "linear-gradient(to left, #0d0d0d, transparent)",
+            zIndex: 2,
+          }}
+        />
       </div>
 
-      {/* Fade left edge */}
-      <div
-        className="absolute top-0 bottom-0 pointer-events-none"
-        style={{
-          left: "clamp(280px, 42%, 520px)",
-          width: 60,
-          background: "linear-gradient(to right, #0d0d0d, transparent)",
-          zIndex: 2,
-        }}
-      />
-
-      {/* Fade top & bottom */}
-      <div
-        className="absolute right-0 top-0 h-16 pointer-events-none"
-        style={{
-          left: "clamp(280px, 42%, 520px)",
-          background: "linear-gradient(to bottom, #0d0d0d, transparent)",
-          zIndex: 2,
-        }}
-      />
-      <div
-        className="absolute right-0 bottom-0 h-16 pointer-events-none"
-        style={{
-          left: "clamp(280px, 42%, 520px)",
-          background: "linear-gradient(to top, #0d0d0d, transparent)",
-          zIndex: 2,
-        }}
-      />
-      {/* Fade right edge grid foto */}
-      <div
-        className="absolute top-0 bottom-0 right-0 w-16 pointer-events-none"
-        style={{
-          background: "linear-gradient(to left, #0d0d0d, transparent)",
-          zIndex: 2,
-        }}
-      />
     </div>
   );
 }
