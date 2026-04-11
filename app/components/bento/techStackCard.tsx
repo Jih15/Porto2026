@@ -96,14 +96,16 @@ export default function TechStackCard() {
 
         {/* Description panel */}
         <div
-          className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
+          // className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
+          className="flex-1 rounded-xl p-4 scrollbar-neon transition-all duration-300"
           style={{
+            overflowY: "scroll",   // ← paksa scroll selalu aktif biar scrollbar visible untuk test
             background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
             border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
           }}
         >
           {active ? (
-            <p className="font-mono text-xs leading-relaxed text-center" style={{ color: "rgba(255,255,255,0.55)" }}>
+            <p className="font-mono text-xs leading-relaxed text-center pt-1" style={{ color: "rgba(255,255,255,0.55)" }}>
               {active.desc}
             </p>
           ) : (
@@ -166,14 +168,16 @@ export default function TechStackCard() {
 
       {/* Description panel */}
       <div
-        className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
-        style={{
-          background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
-          border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
-        }}
+        // className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
+          className="flex-1 rounded-xl p-4 scrollbar-neon transition-all duration-300"
+          style={{
+            overflowY: "scroll",   // ← paksa scroll selalu aktif biar scrollbar visible untuk test
+            background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
+            border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
+          }}
       >
         {active ? (
-          <div className="text-center">
+          <div className="text-center w-full">
             <div className="font-mono text-xs tracking-widest uppercase mb-2" style={{ color: "#b8ff3f" }}>
               {active.name}
             </div>
