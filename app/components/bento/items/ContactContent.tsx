@@ -17,14 +17,14 @@ export default function ContactContent() {
         <br />together
       </h2>
 
-      <p className="mt-6 text-lg leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
+      <p className="mt-6 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
         Tertarik berkolaborasi? Saya selalu terbuka untuk proyek baru, ide
         kreatif, atau kesempatan untuk menjadi bagian dari visi Anda.
       </p>
 
       <a
         href={`mailto:${CONTACT.email}`}
-        className="inline-block mt-8 font-mono text-sm tracking-widest uppercase"
+        className="inline-block mt-8 font-mono text-sm tracking-widest "
         style={{
           color: "#b8ff3f",
           textDecoration: "none",

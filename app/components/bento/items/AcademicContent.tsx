@@ -344,14 +344,14 @@ export default function AcademicContent() {
                   {ac.degree}
                 </p>
                 <p
-                  className="font-mono text-xs tracking-wide m-0"
-                  style={{ color: "rgba(255,255,255,0.4)" }}
+                  className="font-bold text-sm tracking-wide m-0"
+                  style={{ color: "#b8ff3f"  }}
                 >
                   {ac.institution}
                 </p>
                 <p
-                  className="text-xs leading-relaxed mt-1 m-0"
-                  style={{ color: "rgba(255,255,255,0.3)" }}
+                  className="text-sm leading-relaxed mt-1 m-0"
+                  style={{ color: "rgba(255,255,255,0.5)" }}
                 >
                   {ac.desc}
                 </p>
@@ -425,7 +425,7 @@ export default function AcademicContent() {
                       style={{
                         width: 2,
                         height: 48,
-                        background: "rgba(184,255,63,0.35)",
+                        background: "rgba(184,255 ,63,0.35)",
                         borderRadius: 2,
                         alignSelf: "flex-start",
                       }}
@@ -458,7 +458,7 @@ export default function AcademicContent() {
                       {ac.institution}
                     </p>
                     <p
-                      className="text-[0.8rem] leading-relaxed mt-2 m-0"
+                      className="text-sm leading-relaxed mt-2 m-0"
                       style={{ color: "rgba(255,255,255,0.5)" }}
                     >
                       {ac.desc}
@@ -470,7 +470,7 @@ export default function AcademicContent() {
           </div>
 
           <div
-            className="mt-auto pt-16 font-mono text-xs tracking-[0.25em] uppercase"
+            className="mt-auto pt-4 font-mono text-xs tracking-[0.25em] uppercase"
             style={{ color: "rgba(255,255,255,0.12)" }}
           >
             2026 Zaqaul – All Right Reserved
