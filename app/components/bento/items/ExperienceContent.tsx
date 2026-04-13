@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import gsap from "gsap";
-// import images from "@/public/images";
 
 interface Experience {
   number: string;
@@ -13,6 +12,10 @@ interface Experience {
   desc: string;
   bullets: string[];
   photo: string | null;
+  /** Warna aksen per perusahaan (opsional, fallback ke neon) */
+  accent?: string;
+  /** Singkatan untuk placeholder */
+  abbr: string;
 }
 
 const EXPERIENCES: Experience[] = [
@@ -21,6 +24,7 @@ const EXPERIENCES: Experience[] = [
     role: "Web Programmer",
     period: "Okt 2025 – Apr 2026",
     company: "CV. Mediatama Web Indonesia",
+    abbr: "MW",
     location: "Padang, West Sumatera",
     desc: "Contributed to web application development using Laravel, with a focus on frontend implementation.",
     bullets: [
@@ -29,14 +33,15 @@ const EXPERIENCES: Experience[] = [
       "Implementing UI and features based on business requirements",
       "Collaborating with the team to ensure the app runs as expected",
     ],
-    // photo: images.mediatama,
-    photo: null
+    photo: null,
+    accent: "#b8ff3f",
   },
   {
     number: "2",
     role: "Mobile Developer",
     period: "Nov 2024 – Jan 2025",
-    company: "PT. Jaga Anugerah Giat Asa (Assist.id)",
+    company: "PT. Jaga Anugerah Giat Asa",
+    abbr: "JA",
     location: "Pekanbaru, Riau",
     desc: "Worked on a mobile asset management application using Flutter, applying clean architecture and GetX state management.",
     bullets: [
@@ -46,18 +51,139 @@ const EXPERIENCES: Experience[] = [
       "Building and integrating UI components according to designs",
     ],
     photo: null,
+    accent: "#3fb8ff",
   },
   {
     number: "3",
     role: "Data Entry",
     period: "Aug 2024 – Nov 2024",
-    company: "PT. Jaga Anugerah Giat Asa (Assist.id)",
+    company: "PT. Jaga Anugerah Giat Asa",
+    abbr: "JA",
     location: "Pekanbaru, Riau",
-    desc: "Performed data mapping and input of drug transaction data that had previously been matched using fuzzy matching, and adjusted the data to be stored correctly in the database.",
+    desc: "Performed data mapping and input of drug transaction data matched using fuzzy matching, adjusted to be stored correctly in the database.",
     bullets: [],
     photo: null,
+    accent: "#3fb8ff",
   },
 ];
+
+/* ─── Company Image Placeholder ──────────────────────────────── */
+interface PlaceholderProps {
+  company: string;
+  abbr: string;
+  accent?: string;
+}
+
+function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderProps) {
+  // Derive a subtle bg tint from accent
+  const r = parseInt(accent.slice(1, 3), 16);
+  const g = parseInt(accent.slice(3, 5), 16);
+  const b = parseInt(accent.slice(5, 7), 16);
+  const accentRgb = `${r},${g},${b}`;
+
+  return (
+    <div
+      className="relative w-full h-full overflow-hidden flex items-center justify-center"
+      style={{
+        background: `
+          radial-gradient(ellipse 80% 60% at 50% 40%, rgba(${accentRgb},0.07) 0%, transparent 70%),
+          linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0) 60%)
+        `,
+      }}
+    >
+      {/* Subtle dot-grid pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+          backgroundSize: "28px 28px",
+        }}
+      />
+
+      {/* Diagonal accent line — top left */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: 0, left: 0,
+          width: "40%", height: 1,
+          background: `linear-gradient(to right, transparent, rgba(${accentRgb},0.3))`,
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          top: 0, left: 0,
+          width: 1, height: "30%",
+          background: `linear-gradient(to bottom, rgba(${accentRgb},0.3), transparent)`,
+        }}
+      />
+
+      {/* Diagonal accent line — bottom right */}
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: 0, right: 0,
+          width: "40%", height: 1,
+          background: `linear-gradient(to left, transparent, rgba(${accentRgb},0.2))`,
+        }}
+      />
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          bottom: 0, right: 0,
+          width: 1, height: "30%",
+          background: `linear-gradient(to top, rgba(${accentRgb},0.2), transparent)`,
+        }}
+      />
+
+      {/* Center: abbr badge + company name */}
+      <div className="relative flex flex-col items-center gap-4 select-none">
+        {/* Abbr circle */}
+        <div
+          className="flex items-center justify-center rounded-full"
+          style={{
+            width: 64,
+            height: 64,
+            background: `rgba(${accentRgb},0.08)`,
+            border: `1px solid rgba(${accentRgb},0.25)`,
+          }}
+        >
+          <span
+            className="font-bold font-mono"
+            style={{
+              fontSize: "1.25rem",
+              color: accent,
+              letterSpacing: "0.08em",
+            }}
+          >
+            {abbr}
+          </span>
+        </div>
+
+        {/* Company name */}
+        <p
+          className="font-mono text-xs tracking-[0.2em] uppercase text-center"
+          style={{
+            color: "rgba(255,255,255,0.2)",
+            maxWidth: 240,
+            lineHeight: 1.6,
+          }}
+        >
+          {company}
+        </p>
+      </div>
+
+      {/* Bottom fade into content area */}
+      <div
+        className="absolute bottom-0 left-0 right-0 pointer-events-none"
+        style={{
+          height: "45%",
+          background: "linear-gradient(to top, #0d0d0d 20%, transparent 100%)",
+        }}
+      />
+    </div>
+  );
+}
 
 /* ─── TimelineDot ─────────────────────────────────────────────── */
 interface DotProps {
@@ -113,15 +239,11 @@ function VerticalTimeline({ active, onSelect }: VerticalTimelineProps) {
       <div className="flex flex-col">
         {EXPERIENCES.map((e, i) => {
           const isActive = i === active;
-          const isLast = i === EXPERIENCES.length - 1;
+          const isLast   = i === EXPERIENCES.length - 1;
           return (
             <div key={e.number} className="flex gap-4">
               <div className="flex flex-col items-center" style={{ width: 32 }}>
-                <TimelineDot
-                  label={e.number}
-                  isActive={isActive}
-                  onClick={() => onSelect(i)}
-                />
+                <TimelineDot label={e.number} isActive={isActive} onClick={() => onSelect(i)} />
                 {!isLast && (
                   <div
                     data-anim="v-connector"
@@ -193,21 +315,17 @@ function HorizontalTimeline({ active, onSelect }: HorizontalTimelineProps) {
           position: "relative",
         }}
       >
-        {/* Row 1: dots with connectors */}
+        {/* Row 1: dots + connectors */}
         {EXPERIENCES.map((e, i) => {
           const isActive = i === active;
-          const isLast = i === EXPERIENCES.length - 1;
+          const isLast   = i === EXPERIENCES.length - 1;
           return (
             <div
               key={`dot-${e.number}`}
               className="flex items-center"
               style={{ position: "relative", zIndex: 1, justifyContent: "center" }}
             >
-              <TimelineDot
-                label={e.number}
-                isActive={isActive}
-                onClick={() => onSelect(i)}
-              />
+              <TimelineDot label={e.number} isActive={isActive} onClick={() => onSelect(i)} />
               {!isLast && (
                 <div
                   data-anim="h-connector"
@@ -273,7 +391,8 @@ interface DetailPanelProps {
 function DetailPanel({ exp }: DetailPanelProps) {
   return (
     <div className="flex flex-col flex-1 overflow-hidden">
-      {/* Photo / gradient hero */}
+
+      {/* ── Hero area: photo or placeholder ── */}
       <div className="relative shrink-0" style={{ height: "38%" }}>
         {exp.photo ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -283,17 +402,15 @@ function DetailPanel({ exp }: DetailPanelProps) {
             className="w-full h-full object-cover object-top"
           />
         ) : (
-          <div
-            className="w-full h-full"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.03) 60%, #0d0d0d 100%)",
-            }}
+          <CompanyPlaceholder
+            company={exp.company}
+            abbr={exp.abbr}
+            accent={exp.accent}
           />
         )}
       </div>
 
-      {/* Text content */}
+      {/* ── Text content ── */}
       <div className="flex-1 px-6 sm:px-10 py-6 sm:py-8 flex flex-col justify-start overflow-auto">
         <h2
           className="font-bold leading-none"
@@ -329,9 +446,7 @@ function DetailPanel({ exp }: DetailPanelProps) {
                 className="flex gap-3 text-sm"
                 style={{ color: "rgba(255,255,255,0.45)" }}
               >
-                <span className="shrink-0 mt-0.5" style={{ color: "#b8ff3f" }}>
-                  —
-                </span>
+                <span className="shrink-0 mt-0.5" style={{ color: "#b8ff3f" }}>—</span>
                 {b}
               </li>
             ))}
@@ -344,28 +459,24 @@ function DetailPanel({ exp }: DetailPanelProps) {
 
 /* ─── Root ────────────────────────────────────────────────────── */
 export default function ExperienceContent() {
-  const [active, setActive]   = useState<number>(0);
-  const rootRef               = useRef<HTMLDivElement>(null);
-  const detailWrapRef         = useRef<HTMLDivElement>(null);
-  const dirRef                = useRef<number>(1); // arah slide tab: 1 = bawah→atas, -1 = atas→bawah
-  const isFirstRender         = useRef<boolean>(true);
+  const [active, setActive] = useState<number>(0);
+  const rootRef             = useRef<HTMLDivElement>(null);
+  const detailWrapRef       = useRef<HTMLDivElement>(null);
+  const dirRef              = useRef<number>(1);
+  const isFirstRender       = useRef<boolean>(true);
 
   /* ── Entrance animation ─────────────────────────────────────── */
   useEffect(() => {
     const D = 0.68;
-
     const ctx = gsap.context(() => {
-
       const tl = gsap.timeline({ delay: D });
 
-      // Label fade in dari atas
       tl.fromTo(
         "[data-anim='tl-label']",
         { y: -16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" },
       );
 
-      // Dots: bounce scale in dengan stagger
       tl.fromTo(
         "[data-anim='dot']",
         { scale: 0, opacity: 0, transformOrigin: "center center" },
@@ -373,7 +484,6 @@ export default function ExperienceContent() {
         "-=0.3",
       );
 
-      // Vertical connectors: draw dari atas ke bawah
       tl.fromTo(
         "[data-anim='v-connector']",
         { scaleY: 0, transformOrigin: "top center" },
@@ -381,7 +491,6 @@ export default function ExperienceContent() {
         "-=0.4",
       );
 
-      // Horizontal connectors: draw dari kiri ke kanan
       tl.fromTo(
         "[data-anim='h-connector']",
         { scaleX: 0, transformOrigin: "left center" },
@@ -389,7 +498,6 @@ export default function ExperienceContent() {
         "<",
       );
 
-      // Entry texts: slide dari kiri
       tl.fromTo(
         "[data-anim='entry-text']",
         { x: 20, opacity: 0 },
@@ -397,14 +505,12 @@ export default function ExperienceContent() {
         "-=0.5",
       );
 
-      // Detail panel: slide dari kanan
       tl.fromTo(
         detailWrapRef.current,
         { x: 40, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
         "-=0.6",
       );
-
     }, rootRef);
 
     return () => ctx.revert();
@@ -412,13 +518,9 @@ export default function ExperienceContent() {
 
   /* ── Tab switch animation ───────────────────────────────────── */
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
     if (!detailWrapRef.current) return;
 
-    // Slide masuk dari atas atau bawah sesuai arah pemilihan
     gsap.fromTo(
       detailWrapRef.current,
       { y: dirRef.current * 30, opacity: 0 },
@@ -441,20 +543,20 @@ export default function ExperienceContent() {
       className="relative w-full flex flex-col"
       style={{ background: "#0d0d0d", minHeight: "100vh" }}
     >
-      {/* Mobile: horizontal timeline */}
       <HorizontalTimeline active={active} onSelect={handleSelect} />
 
-      {/* Desktop: sidebar + detail */}
       <div className="flex flex-1 overflow-hidden" style={{ minHeight: 0 }}>
         <VerticalTimeline active={active} onSelect={handleSelect} />
 
-        {/* Detail panel wrapper — ref untuk tab animation */}
-        <div ref={detailWrapRef} className="flex flex-col flex-1 overflow-hidden" style={{ minHeight: 0 }}>
+        <div
+          ref={detailWrapRef}
+          className="flex flex-col flex-1 overflow-hidden"
+          style={{ minHeight: 0 }}
+        >
           <DetailPanel exp={exp} />
         </div>
       </div>
 
-      {/* Footer */}
       <div
         className="shrink-0 px-6 sm:px-10 py-5 font-mono text-xs tracking-[0.25em] uppercase"
         style={{
