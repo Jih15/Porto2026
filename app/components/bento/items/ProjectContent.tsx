@@ -8,23 +8,25 @@ const PROJECTS = [
   {
     id: 1,
     category: "Mobile Project",
-    title: "Assist.id Asset Manager",
+    title: "TAlign - Generate Project Title",
     year: "2024",
-    role: "Mobile Developer",
-    desc: "Aplikasi manajemen aset mobile berbasis Flutter dengan clean architecture dan GetX state management, terintegrasi dengan REST API backend.",
-    tags: ["Flutter", "GetX", "Laravel", "REST API"],
-    source: "https://github.com/Jih15",
+    role: "Fullstack Developer",
+    desc: "An AI-powered application for generating thesis or project titles and classifying their difficulty levels.",
+    completeDesc : "An AI-powered application for generating thesis or project titles and classifying their difficulty levels. The app uses the Gemini API to create relevant and creative titles based on user input, and categorizes them into Easy, Medium, or Hard difficulty levels. Built with Flutter for a smooth mobile experience and FastAPI for efficient backend processing.",
+    tags: ["Flutter","FastAPI", "ML" , "Gemini API"],
+    source: "https://github.com/Jih15/TAlign",
     image: null,
   },
   {
     id: 2,
-    category: "Mobile Project",
-    title: "POS Mobile App",
+    category: "Web Project",
+    title: "Web POS Diata",
     year: "2025",
-    role: "Mobile Developer",
-    desc: "Point of Sales mobile application dengan fitur inventory, transaksi real-time, dan laporan penjualan harian yang terintegrasi dengan backend Laravel.",
-    tags: ["Flutter", "Laravel", "MySQL"],
-    source: "https://github.com/Jih15",
+    role: "Web Programmer",
+    desc: "a web-based point-of-sale (POS) application used to manage a store.",
+    completeDesc: "a web-based point-of-sale (POS) application used to manage a store. Built with Laravel and MySQL for a robust and scalable solution.",
+    tags: ["Laravel", "MySQL"],
+    source: "https://preview.diatakasir.com/",
     image: null,
   },
   {
@@ -33,44 +35,45 @@ const PROJECTS = [
     title: "Ahra Engineer Website",
     year: "2025",
     role: "Frontend Developer",
-    desc: "Website company profile dengan CMS terintegrasi, dibangun menggunakan Laravel Blade dan Tailwind CSS dengan desain responsif.",
-    tags: ["Laravel", "Tailwind", "Blade"],
-    source: "https://github.com/Jih15",
+    desc: "The company profile website was built using Bootstrap, Blade, and Bootstrap CSS with a responsive design.",
+    completeDesc: "The company profile website was built using Bootstrap, Blade, and Bootstrap CSS with a responsive design. ",
+    tags: ["Laravel", "Bootstrap", "Blade"],
+    source: "https://ahraengineer.com/",
     image: null,
   },
-  {
-    id: 4,
-    category: "Web Project",
-    title: "Portfolio Website",
-    year: "2026",
-    role: "Fullstack Developer",
-    desc: "Personal portfolio dengan animasi GSAP ScrollTrigger, bento grid layout, dan arsitektur modular Next.js yang mudah di-maintain.",
-    tags: ["Next.js", "GSAP", "TypeScript", "Figma"],
-    source: "https://github.com/Jih15",
-    image: null,
-  },
-  {
-    id: 5,
-    category: "ML Project",
-    title: "Drug Matching API",
-    year: "2024",
-    role: "Backend Developer",
-    desc: "REST API berbasis FastAPI untuk fuzzy matching data transaksi obat menggunakan algoritma NLP, digunakan untuk data entry automation.",
-    tags: ["FastAPI", "Python", "ML", "NLP"],
-    source: "https://github.com/Jih15",
-    image: null,
-  },
-  {
-    id: 6,
-    category: "Mobile Project",
-    title: "E-Commerce App",
-    year: "2025",
-    role: "Mobile Developer",
-    desc: "Aplikasi belanja mobile dengan fitur cart, checkout, payment gateway integration, dan push notification menggunakan Flutter dan Firebase.",
-    tags: ["Flutter", "Firebase", "Dart"],
-    source: "https://github.com/Jih15",
-    image: null,
-  },
+  // {
+  //   id: 4,
+  //   category: "Web Project",
+  //   title: "Portfolio Website",
+  //   year: "2026",
+  //   role: "Fullstack Developer",
+  //   desc: "Personal portfolio dengan animasi GSAP ScrollTrigger, bento grid layout, dan arsitektur modular Next.js yang mudah di-maintain.",
+  //   tags: ["Next.js", "GSAP", "TypeScript", "Figma"],
+  //   source: "https://github.com/Jih15",
+  //   image: null,
+  // },
+  // {
+  //   id: 5,
+  //   category: "ML Project",
+  //   title: "Drug Matching API",
+  //   year: "2024",
+  //   role: "Backend Developer",
+  //   desc: "REST API berbasis FastAPI untuk fuzzy matching data transaksi obat menggunakan algoritma NLP, digunakan untuk data entry automation.",
+  //   tags: ["FastAPI", "Python", "ML", "NLP"],
+  //   source: "https://github.com/Jih15",
+  //   image: null,
+  // },
+  // {
+  //   id: 6,
+  //   category: "Mobile Project",
+  //   title: "E-Commerce App",
+  //   year: "2025",
+  //   role: "Mobile Developer",
+  //   desc: "Aplikasi belanja mobile dengan fitur cart, checkout, payment gateway integration, dan push notification menggunakan Flutter dan Firebase.",
+  //   tags: ["Flutter", "Firebase", "Dart"],
+  //   source: "https://github.com/Jih15",
+  //   image: null,
+  // },
 ];
 
 type Project = (typeof PROJECTS)[0];
@@ -171,6 +174,12 @@ function CardGrid({ project, onClick }: { project: Project; onClick: () => void 
         </div>
       </div>
       <div className="flex flex-col gap-2 px-0.5">
+        <h3
+          className="font-bold leading-tight transition-opacity duration-200 group-hover:opacity-70"
+          style={{ color: "#fff", fontSize: "clamp(0.95rem, 1.3vw, 1.2rem)", letterSpacing: "-0.02em", fontFamily: "var(--font-geist-sans)" }}
+        >
+          {project.title}
+        </h3>
         <div className="flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
             <span
@@ -182,12 +191,6 @@ function CardGrid({ project, onClick }: { project: Project; onClick: () => void 
             </span>
           ))}
         </div>
-        <h3
-          className="font-bold leading-tight transition-opacity duration-200 group-hover:opacity-70"
-          style={{ color: "#fff", fontSize: "clamp(0.95rem, 1.3vw, 1.2rem)", letterSpacing: "-0.02em", fontFamily: "var(--font-geist-sans)" }}
-        >
-          {project.title}
-        </h3>
       </div>
     </div>
   );
@@ -306,7 +309,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
           className="text-sm leading-relaxed"
           style={{ color: "rgba(255,255,255,0.5)" }}
         >
-          {project.desc}
+          {project.completeDesc}
         </p>
 
         {/* Tags */}
@@ -352,7 +355,7 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
           className="mt-auto pt-10 font-mono text-xs tracking-[0.25em] uppercase"
           style={{ color: "rgba(255,255,255,0.12)" }}
         >
-          2026 Zaqaul – All Right Reserved
+          2026 Zaqaul - All Right Reserved
         </div>
       </div>
 
@@ -482,7 +485,7 @@ export default function ProjectContent() {
         {/* LEFT: sidebar */}
         <div
           className="hidden sm:flex flex-col justify-between shrink-0 px-8 md:px-12 py-12 relative"
-          style={{ width: "clamp(220px, 28%, 320px)" }}
+          style={{ width: "clamp(220px, 28%, 360px)" }}
         >
           <div
             ref={sidebarBorderRef}
@@ -512,12 +515,12 @@ export default function ProjectContent() {
               className="text-sm leading-relaxed"
               style={{ color: "rgba(255,255,255,0.35)", maxWidth: 240 }}
             >
-              Kumpulan proyek yang pernah saya kerjakan — dari mobile apps hingga web apps, API, dan UI/UX design.
+              Here are some of the projects I’ve worked on
             </p>
           </div>
 
           <div data-anim="pr-desc" className="font-mono text-xs tracking-[0.25em] uppercase" style={{ color: "rgba(255,255,255,0.12)" }}>
-            2026 Zaqaul
+            2026 Zaqaul - All Right Reserved
           </div>
         </div>
 

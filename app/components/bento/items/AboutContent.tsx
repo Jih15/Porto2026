@@ -5,11 +5,25 @@ import gsap from "gsap";
 import images from "@/public/images";
 import Image from "next/image";
 
+const STATS = [
+  { num: "D4 - TRPL", desc: "Politeknik Negeri Padang" },
+  // { num: "1", desc: "Years of experience" },
+  // { num: "3", desc: "Projects completed" },
+];
+
+// const SKILLS = [
+//   { label: "Flutter", main: true },
+//   { label: "Next.js", main: true },
+//   { label: "Laravel", main: false },
+//   { label: "FastAPI", main: false },
+//   { label: "FIGMA", main: false },
+//   { label: "UI/UX", main: false },
+// ];
+
 export default function AboutContent() {
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Delay base: tunggu overlay expand selesai (~0.65s) + sedikit margin
     const D = 0.68;
 
     const ctx = gsap.context(() => {
@@ -18,42 +32,72 @@ export default function AboutContent() {
          DESKTOP animations
       ════════════════════════════════════════ */
 
-      // ── Photo: curtain lift dari bawah + scale settle ──
       gsap.fromTo(
         "[data-anim='photo-d']",
         { clipPath: "inset(0% 0% 100% 0%)", scale: 1.14, transformOrigin: "center center" },
         { clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 1.5, ease: "expo.inOut", delay: D },
       );
 
-      // ── Label slide dari kiri ──
       gsap.fromTo(
         "[data-anim='d-label']",
         { x: -36, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.7, ease: "power4.out", delay: D + 0.2 },
       );
 
-      // ── Name lines: reveal dari bawah (classic magazine effect) ──
       gsap.fromTo(
         "[data-anim='d-name']",
         { y: "105%", opacity: 0 },
         { y: "0%", opacity: 1, duration: 1.0, stagger: 0.14, ease: "power4.out", delay: D + 0.35 },
       );
 
-      // ── Bio paragraphs: slide dari kanan ──
       gsap.fromTo(
         "[data-anim='d-bio']",
         { x: 44, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.75, stagger: 0.2, ease: "power4.out", delay: D + 0.6 },
       );
 
-      // ── Garis aksen horizontal di bawah nama ──
       gsap.fromTo(
         "[data-anim='d-line']",
         { scaleX: 0, transformOrigin: "left center" },
         { scaleX: 1, duration: 0.8, ease: "expo.out", delay: D + 0.5 },
       );
 
-      // ── Photo: subtle floating setelah masuk ──
+      // ── Stats: slide dari kiri, stagger ──
+      gsap.fromTo(
+        "[data-anim='d-stat']",
+        { x: -24, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.6, stagger: 0.1, ease: "power3.out", delay: D + 0.3 },
+      );
+
+      // ── Skill tags: slide dari kanan, stagger ──
+      gsap.fromTo(
+        "[data-anim='d-skill']",
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: D + 0.65 },
+      );
+
+      // ── Corner brackets: fade in ──
+      gsap.fromTo(
+        "[data-anim='d-corner']",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.6, ease: "power2.out", delay: D + 1.2 },
+      );
+
+      // ── Availability badge ──
+      gsap.fromTo(
+        "[data-anim='d-avail']",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out", delay: D + 1.0 },
+      );
+
+      // ── Index label di tengah bawah ──
+      gsap.fromTo(
+        "[data-anim='d-index']",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: "power2.out", delay: D + 1.4 },
+      );
+
+      // ── Photo floating ──
       gsap.to("[data-anim='photo-d']", {
         y: -14,
         duration: 4.5,
@@ -80,18 +124,36 @@ export default function AboutContent() {
       );
 
       gsap.fromTo(
+        "[data-anim='m-stats']",
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: D + 0.2 },
+      );
+
+      gsap.fromTo(
         "[data-anim='photo-m']",
         { clipPath: "inset(0% 0% 100% 0%)", scale: 1.1, transformOrigin: "center top" },
-        { clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 1.2, ease: "expo.inOut", delay: D + 0.25 },
+        { clipPath: "inset(0% 0% 0% 0%)", scale: 1, duration: 1.2, ease: "expo.inOut", delay: D + 0.3 },
       );
 
       gsap.fromTo(
         "[data-anim='m-bio']",
         { y: 24, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.65, stagger: 0.16, ease: "power3.out", delay: D + 0.75 },
+        { y: 0, opacity: 1, duration: 0.65, stagger: 0.16, ease: "power3.out", delay: D + 0.8 },
       );
 
-    }, rootRef); // semua selector di-scope ke rootRef
+      gsap.fromTo(
+        "[data-anim='m-skill']",
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: "back.out(1.5)", delay: D + 1.0 },
+      );
+
+      gsap.fromTo(
+        "[data-anim='m-avail']",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, ease: "power2.out", delay: D + 1.2 },
+      );
+
+    }, rootRef);
 
     return () => ctx.revert();
   }, []);
@@ -108,12 +170,22 @@ export default function AboutContent() {
       ══════════════════════════════════ */}
       <div className="hidden md:block absolute inset-0 overflow-hidden">
 
-        {/* Layer 0 — Text (z-index di bawah foto) */}
+        {/* Subtle column dividers */}
+        <div
+          className="absolute inset-y-0 pointer-events-none"
+          style={{ left: "33.33%", width: "0.5px", background: "rgba(255,255,255,0.05)", zIndex: 2 }}
+        />
+        <div
+          className="absolute inset-y-0 pointer-events-none"
+          style={{ right: "33.33%", width: "0.5px", background: "rgba(255,255,255,0.05)", zIndex: 2 }}
+        />
+
+        {/* Layer 0 — Text */}
         <div
           className="absolute w-full h-full grid"
           style={{ gridTemplateColumns: "1fr 1fr 1fr", zIndex: 0 }}
         >
-          {/* LEFT: label + name */}
+          {/* LEFT: label + stats + name */}
           <div className="flex flex-col justify-between p-12 pb-72">
             <span
               data-anim="d-label"
@@ -124,7 +196,27 @@ export default function AboutContent() {
             </span>
 
             <div>
-              {/* Garis aksen sebelum nama */}
+              {/* Stats row */}
+              <div className="flex flex-col gap-3 mb-8">
+                {STATS.map((s, i) => (
+                  <div key={i} data-anim="d-stat" className="flex flex-col gap-0.5">
+                    <span
+                      className="font-bold leading-none"
+                      style={{ fontSize: "1.6rem", color: "#b8ff3f", letterSpacing: "-0.04em" }}
+                    >
+                      {s.num}
+                    </span>
+                    <span
+                      className="font-mono uppercase"
+                      style={{ fontSize: "0.6rem", letterSpacing: "0.18em", color: "rgba(255,255,255,0.3)" }}
+                    >
+                      {s.desc}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Garis aksen + nama */}
               <div
                 data-anim="d-line"
                 className="mb-4"
@@ -139,7 +231,6 @@ export default function AboutContent() {
                   fontFamily: "var(--font-geist-sans)",
                 }}
               >
-                {/* Setiap baris dibungkus overflow:hidden untuk efek reveal dari bawah */}
                 {["Zaqaul Fikri", "Aziz"].map((line, i) => (
                   <span
                     key={i}
@@ -154,38 +245,84 @@ export default function AboutContent() {
             </div>
           </div>
 
-          {/* CENTER: kosong — foto overlap di sini */}
+          {/* CENTER: kosong — foto overlap */}
           <div />
 
-          {/* RIGHT: bio text */}
+          {/* RIGHT: skills + bio + availability */}
           <div
-            className="flex flex-col justify-center p-12 pr-16"
+            className="flex flex-col justify-between pt-70 p-16 pr-16"
             style={{ textAlign: "right" }}
           >
-            <p
-              data-anim="d-bio"
-              className="text-sm leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.5)" }}
-            >
-              Fresh graduate in Informatics Engineering (D4-TRPL) 
-              from Politeknik Negeri Padang with a strong focus on Mobile Development using Flutter, 
-              along with experience in Frontend (Next.js) and Backend development (Laravel, FastAPI). 
-              Skilled in building scalable REST APIs 
-              and translating UI/UX designs into functional, responsive applications.
-            </p>
-            {/* <p
-              data-anim="d-bio"
-              className="text-sm leading-relaxed mt-5"
-              style={{ color: "rgba(255,255,255,0.5)" }}
-            >
-              Dengan passion di intersection antara desain dan teknologi, setiap
-              project saya dekati dengan perhatian penuh pada detail, ketelitian,
-              dan inovasi yang menghasilkan solusi yang bermakna.
-            </p> */}
+            {/* Skill tags */}
+            {/* <div>
+              <span
+                className="font-mono uppercase block mb-3"
+                style={{ fontSize: "0.6rem", letterSpacing: "0.3em", color: "rgba(255,255,255,0.25)" }}
+              >
+                Stack
+              </span>
+              <div className="flex flex-wrap gap-1.5 justify-end">
+                {SKILLS.map((sk, i) => (
+                  <span
+                    key={i}
+                    data-anim="d-skill"
+                    className="font-mono uppercase"
+                    style={{
+                      fontSize: "0.55rem",
+                      letterSpacing: "0.14em",
+                      padding: "4px 9px",
+                      border: sk.main
+                        ? "0.5px solid #b8ff3f"
+                        : "0.5px solid rgba(184,255,63,0.25)",
+                      color: sk.main ? "#b8ff3f" : "rgba(184,255,63,0.55)",
+                      borderRadius: "2px",
+                    }}
+                  >
+                    {sk.label}
+                  </span>
+                ))}
+              </div>
+            </div> */}
+
+            <div>
+              <p
+                data-anim="d-bio"
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.45)" }}
+              >
+                Fresh graduate in Informatics Engineering (D4-TRPL)
+                from Politeknik Negeri Padang with a strong focus on Mobile Development using Flutter,
+                along with experience in Frontend (Next.js) and Backend development (Laravel, FastAPI).
+                Skilled in building scalable REST APIs
+                and translating UI/UX designs into functional, responsive applications.
+              </p>
+
+              {/* Availability badge */}
+              <div
+                data-anim="d-avail"
+                className="flex items-center gap-2 justify-end mt-4"
+              >
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    background: "#b8ff3f",
+                    borderRadius: "50%",
+                    display: "inline-block",
+                  }}
+                />
+                <span
+                  className="font-mono uppercase"
+                  style={{ fontSize: "0.6rem", letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)" }}
+                >
+                  Available for work
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Layer 1 — Photo (di atas text) */}
+        {/* Layer 1 — Photo */}
         <div
           data-anim="photo-d"
           className="absolute inset-0 flex items-end justify-center pointer-events-none"
@@ -206,11 +343,87 @@ export default function AboutContent() {
               objectPosition: "top",
             }}
           />
-          {/* Fade bottom */}
           <div
             className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
             style={{ background: "linear-gradient(to top, #111 0%, transparent 100%)" }}
           />
+        </div>
+
+        {/* Layer 2 — Corner brackets + index label (di atas foto) */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: 3 }}
+        >
+          {/* Top-left bracket */}
+          <div
+            data-anim="d-corner"
+            style={{
+              position: "absolute",
+              top: 20,
+              left: "calc(33.33% + 20px)",
+              width: 20,
+              height: 20,
+              borderTop: "1px solid rgba(184,255,63,0.35)",
+              borderLeft: "1px solid rgba(184,255,63,0.35)",
+            }}
+          />
+          {/* Top-right bracket */}
+          <div
+            data-anim="d-corner"
+            style={{
+              position: "absolute",
+              top: 20,
+              right: "calc(33.33% + 20px)",
+              width: 20,
+              height: 20,
+              borderTop: "1px solid rgba(184,255,63,0.35)",
+              borderRight: "1px solid rgba(184,255,63,0.35)",
+            }}
+          />
+          {/* Bottom-left bracket */}
+          <div
+            data-anim="d-corner"
+            style={{
+              position: "absolute",
+              bottom: 20,
+              left: "calc(33.33% + 20px)",
+              width: 20,
+              height: 20,
+              borderBottom: "1px solid rgba(184,255,63,0.35)",
+              borderLeft: "1px solid rgba(184,255,63,0.35)",
+            }}
+          />
+          {/* Bottom-right bracket */}
+          <div
+            data-anim="d-corner"
+            style={{
+              position: "absolute",
+              bottom: 20,
+              right: "calc(33.33% + 20px)",
+              width: 20,
+              height: 20,
+              borderBottom: "1px solid rgba(184,255,63,0.35)",
+              borderRight: "1px solid rgba(184,255,63,0.35)",
+            }}
+          />
+          {/* Index label */}
+          <div
+            data-anim="d-index"
+            style={{
+              position: "absolute",
+              bottom: 28,
+              left: "50%",
+              transform: "translateX(-50%)",
+              fontFamily: "monospace",
+              fontSize: "0.55rem",
+              letterSpacing: "0.3em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.18)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            01 / Profile
+          </div>
         </div>
 
       </div>
@@ -224,7 +437,7 @@ export default function AboutContent() {
       >
 
         {/* Label */}
-        <div data-anim="m-label" className="px-6 pt-16 pb-4">
+        <div data-anim="m-label" className="px-6 pt-16 pb-3">
           <span
             className="font-mono text-xs tracking-[0.35em] uppercase"
             style={{ color: "#b8ff3f" }}
@@ -234,7 +447,7 @@ export default function AboutContent() {
         </div>
 
         {/* Name */}
-        <div data-anim="m-name" className="px-6 pb-6">
+        <div data-anim="m-name" className="px-6 pb-4">
           <h2
             className="font-bold leading-none"
             style={{
@@ -248,6 +461,26 @@ export default function AboutContent() {
             <br />
             Aziz
           </h2>
+        </div>
+
+        {/* Mobile stats */}
+        <div data-anim="m-stats" className="px-6 pb-5 flex gap-6">
+          {STATS.slice(1).map((s, i) => (
+            <div key={i} className="flex flex-col gap-0.5">
+              <span
+                className="font-bold leading-none"
+                style={{ fontSize: "1.6rem", color: "#b8ff3f", letterSpacing: "-0.04em" }}
+              >
+                {s.num}
+              </span>
+              <span
+                className="font-mono uppercase"
+                style={{ fontSize: "0.55rem", letterSpacing: "0.15em", color: "rgba(255,255,255,0.3)" }}
+              >
+                {s.desc}
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Photo */}
@@ -268,29 +501,68 @@ export default function AboutContent() {
             className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
             style={{ background: "linear-gradient(to top, #111 0%, transparent 100%)" }}
           />
+          {/* Corner brackets mobile */}
+          <div style={{ position: "absolute", top: 12, left: 12, width: 16, height: 16, borderTop: "1px solid rgba(184,255,63,0.4)", borderLeft: "1px solid rgba(184,255,63,0.4)" }} />
+          <div style={{ position: "absolute", top: 12, right: 12, width: 16, height: 16, borderTop: "1px solid rgba(184,255,63,0.4)", borderRight: "1px solid rgba(184,255,63,0.4)" }} />
+          <div style={{ position: "absolute", bottom: 12, left: 12, width: 16, height: 16, borderBottom: "1px solid rgba(184,255,63,0.4)", borderLeft: "1px solid rgba(184,255,63,0.4)" }} />
+          <div style={{ position: "absolute", bottom: 12, right: 12, width: 16, height: 16, borderBottom: "1px solid rgba(184,255,63,0.4)", borderRight: "1px solid rgba(184,255,63,0.4)" }} />
         </div>
 
-        {/* Bio text */}
-        <div className="px-6 pt-6 pb-16 flex flex-col gap-4">
+        {/* Bio */}
+        <div className="px-6 pt-6 pb-4 flex flex-col gap-4">
           <p
             data-anim="m-bio"
             className="text-sm leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.5)" }}
+            style={{ color: "rgba(255,255,255,0.45)" }}
           >
-              Fresh graduate in Informatics Engineering (D4-TRPL) 
-              from Politeknik Negeri Padang with a strong focus on Mobile Development using Flutter, 
-              along with experience in Frontend (Next.js) and Backend development (Laravel, FastAPI). 
-              Skilled in building scalable REST APIs 
-              and translating UI/UX designs into functional, responsive applications.
+            Fresh graduate in Informatics Engineering (D4-TRPL)
+            from Politeknik Negeri Padang with a strong focus on Mobile Development using Flutter,
+            along with experience in Frontend (Next.js) and Backend development (Laravel, FastAPI).
+            Skilled in building scalable REST APIs
+            and translating UI/UX designs into functional, responsive applications.
           </p>
-          {/* <p
-            data-anim="m-bio"
-            className="text-sm leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.5)" }}
+        </div>
+
+        {/* Skill tags */}
+        {/* <div className="px-6 pb-5 flex flex-wrap gap-2">
+          {SKILLS.map((sk, i) => (
+            <span
+              key={i}
+              data-anim="m-skill"
+              className="font-mono uppercase"
+              style={{
+                fontSize: "0.6rem",
+                letterSpacing: "0.12em",
+                padding: "4px 9px",
+                border: sk.main
+                  ? "0.5px solid #b8ff3f"
+                  : "0.5px solid rgba(184,255,63,0.25)",
+                color: sk.main ? "#b8ff3f" : "rgba(184,255,63,0.55)",
+                borderRadius: "2px",
+              }}
+            >
+              {sk.label}
+            </span>
+          ))}
+        </div> */}
+
+        {/* Availability badge */}
+        <div data-anim="m-avail" className="px-6 pb-14 flex items-center gap-2">
+          <span
+            style={{
+              width: 6,
+              height: 6,
+              background: "#b8ff3f",
+              borderRadius: "50%",
+              display: "inline-block",
+            }}
+          />
+          <span
+            className="font-mono uppercase"
+            style={{ fontSize: "0.6rem", letterSpacing: "0.25em", color: "rgba(255,255,255,0.3)" }}
           >
-            Dengan passion di intersection antara desain dan teknologi, setiap
-            project saya dekati dengan perhatian penuh pada detail dan inovasi.
-          </p> */}
+            Available for work
+          </span>
         </div>
 
       </div>

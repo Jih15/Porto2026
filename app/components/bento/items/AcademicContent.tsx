@@ -177,7 +177,6 @@ function ScrollRow({ photos, direction = "left", speed = 35 }: ScrollRowProps) {
             }}
           >
             {photo.src
-              // ? <img src={photo.src} alt={photo.alt} className="w-full h-full object-cover" />
               ? <Image src={photo.src} alt={photo.alt} width={80} height={80} className="object-cover" />
               : <div className="w-full h-full" />}
           </div>
@@ -189,7 +188,7 @@ function ScrollRow({ photos, direction = "left", speed = 35 }: ScrollRowProps) {
 
 /* ── Root ─────────────────────────────────────────────────────── */
 export default function AcademicContent() {
-  const rootRef     = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const col1 = PHOTOS.slice(0, 4);
   const col2 = PHOTOS.slice(2, 6);
   const col3 = PHOTOS.slice(4, 10);
@@ -199,96 +198,63 @@ export default function AcademicContent() {
     const root = rootRef.current;
     if (!root) return;
 
-    // RAF memastikan DOM sudah fully committed sebelum GSAP mencari elemen
     const raf = requestAnimationFrame(() => {
-      // Helper: query hanya jika ada hasilnya
       const q = (sel: string) => {
         const els = root.querySelectorAll(sel);
         return els.length ? els : null;
       };
 
-      /* ════════════════════════════════════
-         DESKTOP animations
-      ════════════════════════════════════ */
       const tl = gsap.timeline({ delay: D });
 
       const acLabel   = q("[data-anim='ac-label']");
-      // const acBar     = q("[data-anim='ac-bar']");
       const acYear    = q("[data-anim='ac-year']");
       const acEntry   = q("[data-anim='ac-entry']");
       const acDivider = q("[data-anim='ac-divider']");
       const photoCols = q("[data-anim='photo-col']");
 
-      if (acLabel) tl.fromTo(
-        acLabel,
+      if (acLabel) tl.fromTo(acLabel,
         { x: -28, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.6, ease: "power4.out" },
       );
-
-      // if (acBar) tl.fromTo(
-      //   acBar,
-      //   { scaleY: 0, transformOrigin: "top center" },
-      //   { scaleY: 1, duration: 0.55, stagger: 0.18, ease: "expo.out" },
-      //   "-=0.3",
-      // );
-
-      if (acYear) tl.fromTo(
-        acYear,
+      if (acYear) tl.fromTo(acYear,
         { x: -20, opacity: 0 },
         { x: 0, opacity: 1, duration: 0.5, stagger: 0.18, ease: "power3.out" },
         "<",
       );
-
-      if (acEntry) tl.fromTo(
-        acEntry,
+      if (acEntry) tl.fromTo(acEntry,
         { y: 24, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.6, stagger: 0.18, ease: "power3.out" },
         "-=0.35",
       );
-
-      if (acDivider) tl.fromTo(
-        acDivider,
+      if (acDivider) tl.fromTo(acDivider,
         { scaleX: 0, transformOrigin: "left center" },
         { scaleX: 1, duration: 0.6, ease: "expo.out" },
         "-=0.5",
       );
-
-      if (photoCols) tl.fromTo(
-        photoCols,
+      if (photoCols) tl.fromTo(photoCols,
         { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.7, stagger: 0.14, ease: "power3.out" },
         "-=0.55",
       );
-
-      /* ════════════════════════════════════
-         MOBILE animations
-      ════════════════════════════════════ */
 
       const mLabel  = q("[data-anim='m-ac-label']");
       const mEntry  = q("[data-anim='m-ac-entry']");
       const mStrip  = q("[data-anim='m-strip']");
       const mFooter = q("[data-anim='m-footer']");
 
-      if (mLabel) gsap.fromTo(
-        mLabel,
+      if (mLabel) gsap.fromTo(mLabel,
         { y: -16, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", delay: D },
       );
-
-      if (mEntry) gsap.fromTo(
-        mEntry,
+      if (mEntry) gsap.fromTo(mEntry,
         { y: 32, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.65, stagger: 0.2, ease: "power4.out", delay: D + 0.15 },
       );
-
-      if (mStrip) gsap.fromTo(
-        mStrip,
+      if (mStrip) gsap.fromTo(mStrip,
         { opacity: 0, x: -20 },
         { opacity: 1, x: 0, duration: 0.6, stagger: 0.2, ease: "power3.out", delay: D + 0.5 },
       );
-
-      if (mFooter) gsap.fromTo(
-        mFooter,
+      if (mFooter) gsap.fromTo(mFooter,
         { opacity: 0 },
         { opacity: 1, duration: 0.6, ease: "power2.out", delay: D + 0.8 },
       );
@@ -345,16 +311,23 @@ export default function AcademicContent() {
                 </p>
                 <p
                   className="font-bold text-sm tracking-wide m-0"
-                  style={{ color: "#b8ff3f"  }}
+                  style={{ color: "#b8ff3f" }}
                 >
                   {ac.institution}
                 </p>
-                <p
-                  className="text-sm leading-relaxed mt-1 m-0"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
+
+                {/* ✅ Scrollable desc — mobile */}
+                <div
+                  className="scrollbar-neon overflow-y-auto mt-1"
+                  style={{ maxHeight: "7rem" }}
                 >
-                  {ac.desc}
-                </p>
+                  <p
+                    className="text-sm leading-relaxed m-0"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    {ac.desc}
+                  </p>
+                </div>
               </div>
             </div>
           ))}
@@ -370,13 +343,14 @@ export default function AcademicContent() {
           </div>
         </div>
 
-        {/* Footer */}
+        {/* ✅ Footer mobile — fixed di bawah */}
         <div
           data-anim="m-footer"
           className="mt-auto px-6 py-5 font-mono text-xs tracking-[0.25em] uppercase"
           style={{
             color: "rgba(255,255,255,0.12)",
             borderTop: "1px solid rgba(255,255,255,0.06)",
+            background: "#0d0d0d",
           }}
         >
           2026 Zaqaul – All Right Reserved
@@ -405,31 +379,12 @@ export default function AcademicContent() {
             Education
           </span>
 
-          <div className="flex flex-col gap-10">
+          {/* ✅ Entries area — flex-1 + overflow-hidden agar footer tetap di bawah */}
+          <div className="flex flex-col gap-10 flex-1 overflow-hidden">
             {ACADEMICS.map((ac, i) => (
               <div key={i}>
-                {/* Divider atas (hanya untuk entry ke-2 dst) */}
-                {/* {i > 0 && (
-                  <div
-                    data-anim="ac-divider"
-                    className="mb-10"
-                    style={{ height: "1px", background: "rgba(255,255,255,0.06)" }}
-                  />
-                )} */}
-
                 <div className="flex gap-6">
-                  {/* Accent bar kiri + year */}
                   <div className="flex flex-col items-center gap-2 shrink-0" style={{ minWidth: 88 }}>
-                    {/* <div
-                      data-anim="ac-bar"
-                      style={{
-                        width: 2,
-                        height: 48,
-                        background: "rgba(184,255 ,63,0.35)",
-                        borderRadius: 2,
-                        alignSelf: "flex-start",
-                      }}
-                    /> */}
                     <span
                       data-anim="ac-year"
                       className="font-mono text-xs tracking-wide"
@@ -440,7 +395,7 @@ export default function AcademicContent() {
                   </div>
 
                   {/* Content */}
-                  <div data-anim="ac-entry" className="flex flex-col gap-1">
+                  <div data-anim="ac-entry" className="flex flex-col gap-1 min-w-0">
                     <p
                       className="font-bold leading-snug m-0"
                       style={{
@@ -457,21 +412,33 @@ export default function AcademicContent() {
                     >
                       {ac.institution}
                     </p>
-                    <p
-                      className="text-sm leading-relaxed mt-2 m-0"
-                      style={{ color: "rgba(255,255,255,0.5)" }}
+
+                    {/* ✅ Scrollable desc — desktop */}
+                    <div
+                      className="scrollbar-neon overflow-y-auto mt-2"
+                      style={{ maxHeight: "8rem" }}
                     >
-                      {ac.desc}
-                    </p>
+                      <p
+                        className="text-sm leading-relaxed m-0"
+                        style={{ color: "rgba(255,255,255,0.5)" }}
+                      >
+                        {ac.desc}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
 
+          {/* ✅ Footer desktop — sticky bottom */}
           <div
-            className="mt-auto pt-4 font-mono text-xs tracking-[0.25em] uppercase"
-            style={{ color: "rgba(255,255,255,0.12)" }}
+            className="sticky bottom-0 pt-3 pb-5 font-mono text-xs tracking-[0.25em] uppercase"
+            style={{
+              color: "rgba(255,255,255,0.12)",
+              borderTop: "1px solid rgba(255,255,255,0.06)",
+              background: "#0d0d0d",
+            }}
           >
             2026 Zaqaul – All Right Reserved
           </div>
@@ -496,7 +463,6 @@ export default function AcademicContent() {
           style={{
             left: "clamp(280px, 42%, 520px)",
             width: 60,
-            // background: "linear-gradient(to right, #0d0d0d, transparent)",
             zIndex: 2,
           }}
         />
