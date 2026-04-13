@@ -25,7 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ── Scrollbar neon — HARUS di luar @layer ── */
+/* ── Scrollbar neon ── */
 .scrollbar-neon {
   scrollbar-width: thin;
   scrollbar-color: rgba(184, 255, 63, 0.3) transparent;

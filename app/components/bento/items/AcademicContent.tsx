@@ -11,13 +11,13 @@ const ACADEMICS = [
     year: "2021 – 2025",
     degree: "D4 - Teknologi Rekayasa Perangkat Lunak",
     institution: "Politeknik Negeri Padang",
-    desc: "Fokus pada software engineering, algoritma, dan pengembangan aplikasi berbasis web dan mobile.",
+    desc: "As a recent graduate of Politeknik Negeri Padang with a 3.44/4.00 GPA, I have a solid skill set in Mobile and Web Development. Adaptable and detail-oriented, with a creative background in videography and photography that enhances my approach to design and user experience. Currently seeking opportunities to grow as a Mobile Developer while remaining open to Frontend and related roles.",
   },
   {
     year: "2017 – 2020",
     degree: "MA - Ilmu Pengetahuan Alam",
     institution: "MAN 1 Bukittinggi",
-    desc: "Jurusan Ilmu Pengetahuan Alam dengan prestasi di bidang komputer dan teknologi informasi.",
+    desc: "Completed high school in Science (Ilmu Pengetahuan Alam) with a final grade of 86.00/100, while actively participating in academic competitions including a national scientific paper competition in technology and mathematics education as a game designer, as well as various computer science olympiads at city to provincial levels (2018–2019) focused on programming and logical problem-solving.",
   },
 ];
 
@@ -42,7 +42,7 @@ function PhotoTile({ item }: { item: { src: string | null; alt: string } }) {
       style={{
         background: item.src ? "transparent" : "rgba(255,255,255,0.07)",
         border: "1px solid rgba(255,255,255,0.06)",
-        aspectRatio: "1 / 1",
+        aspectRatio: "2 / 3",
         width: "100%",
       }}
     >
@@ -350,7 +350,7 @@ export default function AcademicContent() {
                   {ac.institution}
                 </p>
                 <p
-                  className="text-sm leading-relaxed mt-1 m-0"
+                  className="text-xs leading-relaxed mt-1 m-0"
                   style={{ color: "rgba(255,255,255,0.3)" }}
                 >
                   {ac.desc}
@@ -366,7 +366,7 @@ export default function AcademicContent() {
             <ScrollRow photos={PHOTOS.slice(0, 6)} direction="left"  speed={30} />
           </div>
           <div data-anim="m-strip">
-            <ScrollRow photos={PHOTOS.slice(2, 8)} direction="right" speed={24} />
+            <ScrollRow photos={PHOTOS.slice(2, 10)} direction="right" speed={24} />
           </div>
         </div>
 
@@ -399,7 +399,7 @@ export default function AcademicContent() {
         >
           <span
             data-anim="ac-label"
-            className="font-mono text-xs tracking-[0.35em] uppercase mb-10 pt-32"
+            className="font-mono text-xs tracking-[0.35em] uppercase mb-10 pt-6"
             style={{ color: "#b8ff3f" }}
           >
             Education
@@ -452,14 +452,14 @@ export default function AcademicContent() {
                       {ac.degree}
                     </p>
                     <p
-                      className="font-mono text-xs tracking-wide m-0"
-                      style={{ color: "rgba(255,255,255,0.4)" }}
+                      className="font-bold text-xs tracking-wide m-0"
+                      style={{ color: "#b8ff3f" }}
                     >
                       {ac.institution}
                     </p>
                     <p
-                      className="text-sm leading-relaxed mt-2 m-0"
-                      style={{ color: "rgba(255,255,255,0.3)" }}
+                      className="text-[0.8rem] leading-relaxed mt-2 m-0"
+                      style={{ color: "rgba(255,255,255,0.5)" }}
                     >
                       {ac.desc}
                     </p>
@@ -470,7 +470,7 @@ export default function AcademicContent() {
           </div>
 
           <div
-            className="mt-auto pt-24 font-mono text-xs tracking-[0.25em] uppercase"
+            className="mt-auto pt-16 font-mono text-xs tracking-[0.25em] uppercase"
             style={{ color: "rgba(255,255,255,0.12)" }}
           >
             2026 Zaqaul – All Right Reserved
@@ -496,7 +496,7 @@ export default function AcademicContent() {
           style={{
             left: "clamp(280px, 42%, 520px)",
             width: 60,
-            background: "linear-gradient(to right, #0d0d0d, transparent)",
+            // background: "linear-gradient(to right, #0d0d0d, transparent)",
             zIndex: 2,
           }}
         />

@@ -167,11 +167,13 @@ export default function AboutContent() {
               className="text-sm leading-relaxed"
               style={{ color: "rgba(255,255,255,0.5)" }}
             >
-              Saya adalah seorang full-stack developer dan UI designer yang
-              berfokus pada membangun produk digital yang estetik, fungsional,
-              dan memberikan pengalaman pengguna yang luar biasa.
+              Fresh graduate in Informatics Engineering (D4-TRPL) 
+              from Politeknik Negeri Padang with a strong focus on Mobile Development using Flutter, 
+              along with experience in Frontend (Next.js) and Backend development (Laravel, FastAPI). 
+              Skilled in building scalable REST APIs 
+              and translating UI/UX designs into functional, responsive applications.
             </p>
-            <p
+            {/* <p
               data-anim="d-bio"
               className="text-sm leading-relaxed mt-5"
               style={{ color: "rgba(255,255,255,0.5)" }}
@@ -179,7 +181,7 @@ export default function AboutContent() {
               Dengan passion di intersection antara desain dan teknologi, setiap
               project saya dekati dengan perhatian penuh pada detail, ketelitian,
               dan inovasi yang menghasilkan solusi yang bermakna.
-            </p>
+            </p> */}
           </div>
         </div>
 
