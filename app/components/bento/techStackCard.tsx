@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useIsMobile } from "./useIsMobile";
 import images from "@/public/images";
 
@@ -35,14 +35,62 @@ const TECHS = [
 export default function TechStackCard() {
   const [selected, setSelected] = useState<number | null>(null);
   const isMobile = useIsMobile();
+  const iconRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const active = selected !== null ? TECHS[selected] : null;
 
-  /* ── MOBILE layout ───────────────────────────────────────── */
+  /* ── Entrance stagger ── */
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const gsap = (await import("gsap")).default;
+      if (cancelled) return;
+      iconRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.fromTo(el,
+          { scale: 0.7, opacity: 0 },
+          { scale: 1, opacity: 1, duration: 0.45, delay: 0.65 + i * 0.06, ease: "back.out(2.5)" },
+        );
+      });
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  /* ── Click: spring bounce then set state ── */
+  const handleSelect = useCallback(async (i: number) => {
+    const gsap = (await import("gsap")).default;
+    const el = iconRefs.current[i];
+
+    // Deselect previous
+    if (selected !== null && selected !== i) {
+      const prev = iconRefs.current[selected];
+      if (prev) gsap.to(prev, { scale: 1, duration: 0.25, ease: "power2.out" });
+    }
+
+    if (selected === i) {
+      // Toggle off
+      if (el) {
+        gsap.timeline()
+          .to(el, { scale: 0.88, duration: 0.1,  ease: "power2.in"  })
+          .to(el, { scale: 1,    duration: 0.3,  ease: "back.out(3)" });
+      }
+      setSelected(null);
+    } else {
+      // Select
+      if (el) {
+        gsap.timeline()
+          .to(el, { scale: 0.82, duration: 0.09, ease: "power2.in"   })
+          .to(el, { scale: 1.18, duration: 0.35, ease: "back.out(3.5)" })
+          .to(el, { scale: 1,    duration: 0.2,  ease: "power2.out"  });
+      }
+      setSelected(i);
+    }
+  }, [selected]);
+
+  /* ── MOBILE layout ── */
   if (isMobile) {
     return (
       <div className="absolute inset-0 flex flex-col p-5 gap-3">
-        {/* Header */}
         <div className="flex items-start justify-between">
           <div>
             <div className="font-mono text-xs tracking-[0.25em] uppercase" style={{ color: "#b8ff3f" }}>
@@ -62,13 +110,14 @@ export default function TechStackCard() {
           )}
         </div>
 
-        {/* Icons — 5 dalam satu baris */}
+        {/* Icons — 5 in one row */}
         <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(5, 1fr)" }}>
           {TECHS.map((tech, i) => (
             <button
               key={tech.name}
-              onClick={() => setSelected(selected === i ? null : i)}
-              className="relative flex items-center justify-center rounded-xl transition-all duration-200"
+              ref={(el) => { iconRefs.current[i] = el; }}
+              onClick={() => handleSelect(i)}
+              className="relative flex items-center justify-center rounded-xl"
               style={{
                 aspectRatio: "1",
                 background: selected === i ? "rgba(184,255,63,0.15)" : "rgba(255,255,255,0.05)",
@@ -76,6 +125,8 @@ export default function TechStackCard() {
                   ? "1px solid rgba(184,255,63,0.5)"
                   : "1px solid rgba(255,255,255,0.07)",
                 cursor: "pointer",
+                willChange: "transform",
+                transition: "background 0.25s ease, border 0.25s ease",
               }}
               title={tech.name}
             >
@@ -94,14 +145,14 @@ export default function TechStackCard() {
           ))}
         </div>
 
-        {/* Description panel */}
+        {/* Description */}
         <div
-          // className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
-          className="flex-1 rounded-xl p-4 scrollbar-neon transition-all duration-300"
+          className="flex-1 rounded-xl p-4 scrollbar-neon"
           style={{
-            overflowY: "scroll",   // ← paksa scroll selalu aktif biar scrollbar visible untuk test
+            overflowY: "auto",
             background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
             border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
+            transition: "background 0.3s ease, border 0.3s ease",
           }}
         >
           {active ? (
@@ -118,10 +169,9 @@ export default function TechStackCard() {
     );
   }
 
-  /* ── DESKTOP layout ──────────────────────────────────────── */
+  /* ── DESKTOP layout ── */
   return (
     <div className="absolute inset-0 flex flex-col p-5 gap-3">
-      {/* Header */}
       <div>
         <div className="font-mono text-xs tracking-[0.25em] uppercase mb-1" style={{ color: "#b8ff3f" }}>
           Tech
@@ -134,13 +184,14 @@ export default function TechStackCard() {
         </div>
       </div>
 
-      {/* Icons — 3 kolom */}
+      {/* Icons — 3 columns */}
       <div className="grid grid-cols-3 gap-2 shrink-0">
         {TECHS.map((tech, i) => (
           <button
             key={tech.name}
-            onClick={() => setSelected(selected === i ? null : i)}
-            className="relative flex items-center justify-center rounded-xl transition-all duration-200"
+            ref={(el) => { iconRefs.current[i] = el; }}
+            onClick={() => handleSelect(i)}
+            className="relative flex items-center justify-center rounded-xl"
             style={{
               aspectRatio: "1",
               background: selected === i ? "rgba(184,255,63,0.15)" : "rgba(255,255,255,0.05)",
@@ -148,6 +199,8 @@ export default function TechStackCard() {
                 ? "1px solid rgba(184,255,63,0.5)"
                 : "1px solid rgba(255,255,255,0.07)",
               cursor: "pointer",
+              willChange: "transform",
+              transition: "background 0.25s ease, border 0.25s ease",
             }}
             title={tech.name}
           >
@@ -166,15 +219,15 @@ export default function TechStackCard() {
         ))}
       </div>
 
-      {/* Description panel */}
+      {/* Description */}
       <div
-        // className="flex-1 rounded-xl flex items-center justify-center p-4 transition-all duration-300"
-          className="flex-1 rounded-xl p-4 scrollbar-neon transition-all duration-300"
-          style={{
-            overflowY: "scroll",   // ← paksa scroll selalu aktif biar scrollbar visible untuk test
-            background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
-            border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
-          }}
+        className="flex-1 rounded-xl p-4 scrollbar-neon"
+        style={{
+          overflowY: "auto",
+          background: active ? "rgba(184,255,63,0.06)" : "rgba(255,255,255,0.03)",
+          border: active ? "1px solid rgba(184,255,63,0.15)" : "1px solid rgba(255,255,255,0.05)",
+          transition: "background 0.3s ease, border 0.3s ease",
+        }}
       >
         {active ? (
           <div className="text-center w-full">
