@@ -297,16 +297,16 @@ function ProjectDetail({ project, onBack }: { project: Project; onBack: () => vo
         </p>
 
         {/* Divider */}
-        <div
+        {/* <div
           data-detail="item"
           className="my-5"
           style={{ height: 1, background: "rgba(255,255,255,0.06)" }}
-        />
+        /> */}
 
         {/* Description */}
         <p
           data-detail="item"
-          className="text-sm leading-relaxed"
+          className="text-sm leading-relaxed my-4"
           style={{ color: "rgba(255,255,255,0.5)" }}
         >
           {project.completeDesc}

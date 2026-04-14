@@ -70,11 +70,11 @@ export default function AboutContent() {
       );
 
       // ── Skill tags: slide dari kanan, stagger ──
-      gsap.fromTo(
-        "[data-anim='d-skill']",
-        { x: 20, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: D + 0.65 },
-      );
+      // gsap.fromTo(
+      //   "[data-anim='d-skill']",
+      //   { x: 20, opacity: 0 },
+      //   { x: 0, opacity: 1, duration: 0.5, stagger: 0.07, ease: "power3.out", delay: D + 0.65 },
+      // );
 
       // ── Corner brackets: fade in ──
       gsap.fromTo(
@@ -141,11 +141,11 @@ export default function AboutContent() {
         { y: 0, opacity: 1, duration: 0.65, stagger: 0.16, ease: "power3.out", delay: D + 0.8 },
       );
 
-      gsap.fromTo(
-        "[data-anim='m-skill']",
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: "back.out(1.5)", delay: D + 1.0 },
-      );
+      // gsap.fromTo(
+      //   "[data-anim='m-skill']",
+      //   { opacity: 0, scale: 0.9 },
+      //   { opacity: 1, scale: 1, duration: 0.4, stagger: 0.06, ease: "back.out(1.5)", delay: D + 1.0 },
+      // );
 
       gsap.fromTo(
         "[data-anim='m-avail']",
