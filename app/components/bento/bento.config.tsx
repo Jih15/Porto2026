@@ -3,7 +3,7 @@ import AboutContent      from "./items/AboutContent";
 import AcademicContent from "./items/AcademicContent";
 import ContactContent    from "./items/ContactContent";
 import ExperienceContent from "./items/ExperienceContent";
-import ProjectContent    from "./items/ProjectContent";
+import ProjectContent    from "./items/ProjectContent/ProjectContent";
 
 export const bentoItems: BentoItemDef[] = [
   // ── Col 1-2 ─────────────────────────────────────────
