@@ -18,8 +18,7 @@ export default function ContactContent() {
       </h2>
 
       <p className="mt-6 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.55)" }}>
-        Tertarik berkolaborasi? Saya selalu terbuka untuk proyek baru, ide
-        kreatif, atau kesempatan untuk menjadi bagian dari visi Anda.
+        Interested in collaborating? I’m always open to new projects, creative ideas, or opportunities to be part of your vision.
       </p>
 
       <a
