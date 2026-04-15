@@ -8,27 +8,27 @@ const TECHS = [
   {
     name: "Flutter",
     icon: `${images.flutter}`,
-    desc: "Mengembangkan aplikasi mobile yang responsif dengan pengelolaan state yang baik, integrasi API, serta fokus pada performa dan pengalaman pengguna.",
+    desc: "Developing responsive mobile apps with state management, API integration, and a focus on performance and user experience.",
   },
   {
     name: "Next.js",
     icon: `${images.nextjs}`,
-    desc: "Membangun aplikasi web modern menggunakan SSR dan routing dinamis.",
+    desc: "Developing modern web applications using SSR and dynamic routing.",
   },
   {
     name: "Laravel",
     icon: `${images.laravel}`,
-    desc: "Membangun aplikasi backend menggunakan arsitektur MVC, pengelolaan database yang efisien, serta pengembangan API dan tampilan dengan Blade.",
+    desc: "Developing backend applications using the MVC architecture, efficient database management, and API development with Blade templating.",
   },
   {
     name: "FastAPI",
     icon: `${images.fastapi}`,
-    desc: "Membuat API RESTful dengan Python dan menambahkan machine learning.",
+    desc: "Developing RESTful APIs with Python and integrating machine learning capabilities.",
   },
   {
     name: "Figma",
     icon: `${images.figma}`,
-    desc: "Mendesain antarmuka pengguna yang intuitif dengan pendekatan UI/UX, membuat prototype interaktif, serta berkolaborasi dalam perancangan layout yang konsisten.",
+    desc: "Designing intuitive user interfaces with a UI/UX approach, creating interactive prototypes, and collaborating on consistent layout design."
   },
 ];
 
