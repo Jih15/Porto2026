@@ -240,11 +240,9 @@ export default function TechStackCard() {
           </div>
         ) : (
           <p className="font-mono text-xs text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
-            Klik salah satu
+            Click the icon
             <br />
-            icon untuk
-            <br />
-            melihat detail
+            to view details
           </p>
         )}
       </div>
