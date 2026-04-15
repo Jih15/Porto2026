@@ -75,7 +75,6 @@ interface PlaceholderProps {
 }
 
 function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderProps) {
-  // Derive a subtle bg tint from accent
   const r = parseInt(accent.slice(1, 3), 16);
   const g = parseInt(accent.slice(3, 5), 16);
   const b = parseInt(accent.slice(5, 7), 16);
@@ -91,7 +90,6 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
         `,
       }}
     >
-      {/* Subtle dot-grid pattern */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -100,7 +98,6 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
         }}
       />
 
-      {/* Diagonal accent line — top left */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -118,7 +115,6 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
         }}
       />
 
-      {/* Diagonal accent line — bottom right */}
       <div
         className="absolute pointer-events-none"
         style={{
@@ -136,9 +132,7 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
         }}
       />
 
-      {/* Center: abbr badge + company name */}
       <div className="relative flex flex-col items-center gap-4 select-none">
-        {/* Abbr circle */}
         <div
           className="flex items-center justify-center rounded-full"
           style={{
@@ -160,7 +154,6 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
           </span>
         </div>
 
-        {/* Company name */}
         <p
           className="font-mono text-xs tracking-[0.2em] uppercase text-center"
           style={{
@@ -173,7 +166,6 @@ function CompanyPlaceholder({ company, abbr, accent = "#b8ff3f" }: PlaceholderPr
         </p>
       </div>
 
-      {/* Bottom fade into content area */}
       <div
         className="absolute bottom-0 left-0 right-0 pointer-events-none"
         style={{
@@ -560,11 +552,11 @@ export default function ExperienceContent() {
       <div
         className="shrink-0 px-6 sm:px-10 py-5 font-mono text-xs tracking-[0.25em] uppercase"
         style={{
-          color: "rgba(255,255,255,0.15)",
+          color: "rgba(255,255,255,0.12)",
           borderTop: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        2026 Zaqaul · All Right Reserved
+        © 2026 Zaqaul · All Rights Reserved
       </div>
     </div>
   );

@@ -4,8 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { Project } from "./types";
 import { ImageGallery } from "./ImageGallery";
-// import type { Project } from "./types";
-// import { ImageGallery } from "./ImageGallery";
 
 interface Props {
   project: Project;
@@ -141,9 +139,9 @@ export default function ProjectDetail({ project, onBack }: Props) {
             </a>
           </div>
 
-          {/* Footer */}
+          {/* Footer mobile */}
           <p className="font-mono text-xs tracking-[0.25em] uppercase mt-4" style={{ color: "rgba(255,255,255,0.1)" }}>
-            2026 Zaqaul - All Right Reserved
+            © 2026 Zaqaul · All Rights Reserved
           </p>
         </div>
       </div>
@@ -218,12 +216,13 @@ export default function ProjectDetail({ project, onBack }: Props) {
             </a>
           </div>
 
+          {/* Footer desktop */}
           <div
             data-detail="item"
             className="mt-auto pt-10 font-mono text-xs tracking-[0.25em] uppercase"
             style={{ color: "rgba(255,255,255,0.12)" }}
           >
-            2026 Zaqaul - All Right Reserved
+            © 2026 Zaqaul · All Rights Reserved
           </div>
         </div>
 

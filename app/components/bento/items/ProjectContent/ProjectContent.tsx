@@ -6,10 +6,6 @@ import { Project, PROJECTS } from "./types";
 import { IconGrid, IconList } from "@/public/icons";
 import { CardGrid, CardList } from "./ProjectCard";
 import ProjectDetail from "./ProjectDetail";
-// import { PROJECTS, type Project } from "./types";
-// import { CardList, CardGrid } from "./ProjectCards";
-// import ProjectDetail from "./ProjectDetail";
-// import { IconList, IconGrid } from "./Icons";
 
 export default function ProjectContent() {
   const [layout, setLayout]               = useState<"list" | "grid">("list");
@@ -145,12 +141,14 @@ export default function ProjectContent() {
               Here are some of the projects I&apos;ve worked on
             </p>
           </div>
+
+          {/* Footer sidebar desktop */}
           <div
             data-anim="pr-desc"
             className="font-mono text-xs tracking-[0.25em] uppercase"
             style={{ color: "rgba(255,255,255,0.12)" }}
           >
-            2026 Zaqaul - All Right Reserved
+            © 2026 Zaqaul · All Rights Reserved
           </div>
         </div>
 

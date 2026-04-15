@@ -316,7 +316,7 @@ export default function AcademicContent() {
                   {ac.institution}
                 </p>
 
-                {/* ✅ Scrollable desc — mobile */}
+                {/* Scrollable desc — mobile */}
                 <div
                   className="scrollbar-neon overflow-y-auto mt-1"
                   style={{ maxHeight: "7rem" }}
@@ -343,7 +343,7 @@ export default function AcademicContent() {
           </div>
         </div>
 
-        {/* ✅ Footer mobile — fixed di bawah */}
+        {/* Footer mobile */}
         <div
           data-anim="m-footer"
           className="mt-auto px-6 py-5 font-mono text-xs tracking-[0.25em] uppercase"
@@ -353,7 +353,7 @@ export default function AcademicContent() {
             background: "#0d0d0d",
           }}
         >
-          2026 Zaqaul – All Right Reserved
+          © 2026 Zaqaul · All Rights Reserved
         </div>
       </div>
 
@@ -379,7 +379,7 @@ export default function AcademicContent() {
             Education
           </span>
 
-          {/* ✅ Entries area — flex-1 + overflow-hidden agar footer tetap di bawah */}
+          {/* Entries area — flex-1 + overflow-hidden agar footer tetap di bawah */}
           <div className="flex flex-col gap-10 flex-1 overflow-hidden">
             {ACADEMICS.map((ac, i) => (
               <div key={i}>
@@ -413,7 +413,7 @@ export default function AcademicContent() {
                       {ac.institution}
                     </p>
 
-                    {/* ✅ Scrollable desc — desktop */}
+                    {/* Scrollable desc — desktop */}
                     <div
                       className="scrollbar-neon overflow-y-auto mt-2"
                       style={{ maxHeight: "8rem" }}
@@ -431,7 +431,7 @@ export default function AcademicContent() {
             ))}
           </div>
 
-          {/* ✅ Footer desktop — sticky bottom */}
+          {/* Footer desktop — sticky bottom */}
           <div
             className="sticky bottom-0 pt-3 pb-5 font-mono text-xs tracking-[0.25em] uppercase"
             style={{
@@ -440,7 +440,7 @@ export default function AcademicContent() {
               background: "#0d0d0d",
             }}
           >
-            2026 Zaqaul – All Right Reserved
+            © 2026 Zaqaul · All Rights Reserved
           </div>
         </div>
 
