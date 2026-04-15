@@ -161,7 +161,7 @@ export default function TechStackCard() {
             </p>
           ) : (
             <p className="font-mono text-xs text-center leading-relaxed" style={{ color: "rgba(255,255,255,0.2)" }}>
-              Klik icon untuk melihat detail
+              Click the icon to view the details
             </p>
           )}
         </div>
