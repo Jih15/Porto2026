@@ -66,7 +66,7 @@ export const bentoItems: BentoItemDef[] = [
     expandable: false,
     bg:         "#b8ff3f",
     accentColor: "#080808",
-    gridStyle:  { gridColumn: "6 / span 2", gridRow: "4 / span 1" },
+    gridStyle:  { gridColumn: "6 / span 2", gridRow: "4 / span 2" },
     mobileHeight: "110px",
   },
 
@@ -79,7 +79,7 @@ export const bentoItems: BentoItemDef[] = [
     bg:         "#111111",
     accentColor: "#b8ff3f",
     expandContent: <AcademicContent />,
-    gridStyle:  { gridColumn: "6 / span 2", gridRow: "5 / span 4" },
+    gridStyle:  { gridColumn: "6 / span 2", gridRow: "6 / span 3" },
     mobileHeight: "200px",
   },
 
