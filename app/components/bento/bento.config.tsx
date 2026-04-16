@@ -57,7 +57,20 @@ export const bentoItems: BentoItemDef[] = [
     mobileHeight: "180px",
   },
 
-  // ── Col 6-7 mid ──────────────────────────────────────
+  // ── Col 6-7 mid — CV di atas Academic ────────────────
+  // CV Download: highlight kuning, row kecil di atas Academic
+  {
+    id: 8,
+    label:      "Resume",
+    sublabel:   "Download CV",
+    expandable: false,
+    bg:         "#b8ff3f",
+    accentColor: "#080808",
+    gridStyle:  { gridColumn: "6 / span 2", gridRow: "4 / span 1" },
+    mobileHeight: "110px",
+  },
+
+  // ── Col 6-7 mid — Academic di bawah CV ───────────────
   {
     id: 5,
     label:      "Academic",
@@ -66,8 +79,8 @@ export const bentoItems: BentoItemDef[] = [
     bg:         "#111111",
     accentColor: "#b8ff3f",
     expandContent: <AcademicContent />,
-    gridStyle:  { gridColumn: "6 / span 2", gridRow: "4 / span 3" },
-    mobileHeight: "180px",
+    gridStyle:  { gridColumn: "6 / span 2", gridRow: "5 / span 4" },
+    mobileHeight: "200px",
   },
 
   // ── Col 8-9 mid+bottom ───────────────────────────────
@@ -93,19 +106,6 @@ export const bentoItems: BentoItemDef[] = [
     accentColor: "#b8ff3f",
     expandContent: <ContactContent />,
     gridStyle:  { gridColumn: "3 / span 3", gridRow: "7 / span 2" },
-    mobileHeight: "160px",
-  },
-
-  // ── Col 6-7 bottom — CV Download ─────────────────────
-  // CVCard: special rendering via id=8 in BentoCell
-  {
-    id: 8,
-    label:      "Resume",
-    sublabel:   "Download CV",
-    expandable: false,
-    bg:         "#111111",
-    accentColor: "#b8ff3f",
-    gridStyle:  { gridColumn: "6 / span 2", gridRow: "7 / span 2" },
     mobileHeight: "160px",
   },
 ];

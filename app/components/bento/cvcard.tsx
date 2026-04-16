@@ -28,26 +28,18 @@ export default function CVCard() {
     setOpen(true);
 
     const tl = gsap.timeline();
-
-    // Default content fades out
-    tl.to(defaultRef.current, { opacity: 0, y: -10, duration: 0.22, ease: "power2.in" });
-
-    // Icon rotates
-    tl.to(iconRef.current, { rotate: 180, duration: 0.35, ease: "back.out(2)" }, "<");
-
-    // Panel slides up
+    tl.to(defaultRef.current, { opacity: 0, y: -8, duration: 0.2, ease: "power2.in" });
+    tl.to(iconRef.current, { rotate: 180, duration: 0.32, ease: "back.out(2)" }, "<");
     tl.to(
       panelRef.current,
-      { yPercent: 0, opacity: 1, duration: 0.45, ease: "expo.out" },
-      "-=0.15",
+      { yPercent: 0, opacity: 1, duration: 0.42, ease: "expo.out" },
+      "-=0.1",
     );
-
-    // Buttons stagger in
     tl.fromTo(
       [btnEnRef.current, btnIdRef.current, closeRef.current],
-      { y: 14, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.35, stagger: 0.07, ease: "power3.out" },
-      "-=0.25",
+      { y: 10, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.3, stagger: 0.06, ease: "power3.out" },
+      "-=0.2",
     );
   }, [open]);
 
@@ -57,22 +49,21 @@ export default function CVCard() {
     if (!open) return;
 
     const tl = gsap.timeline({ onComplete: () => setOpen(false) });
-
     tl.to(
       [btnEnRef.current, btnIdRef.current, closeRef.current],
-      { y: 8, opacity: 0, duration: 0.2, stagger: 0.04, ease: "power2.in" },
+      { y: 6, opacity: 0, duration: 0.18, stagger: 0.04, ease: "power2.in" },
     );
     tl.to(
       panelRef.current,
-      { yPercent: 105, opacity: 0, duration: 0.38, ease: "expo.in" },
-      "-=0.15",
+      { yPercent: 105, opacity: 0, duration: 0.35, ease: "expo.in" },
+      "-=0.12",
     );
     tl.to(
       defaultRef.current,
-      { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" },
-      "-=0.15",
+      { opacity: 1, y: 0, duration: 0.28, ease: "power3.out" },
+      "-=0.12",
     );
-    tl.to(iconRef.current, { rotate: 0, duration: 0.3, ease: "power2.out" }, "<");
+    tl.to(iconRef.current, { rotate: 0, duration: 0.28, ease: "power2.out" }, "<");
   }, [open]);
 
   return (
@@ -80,56 +71,55 @@ export default function CVCard() {
       className="absolute inset-0 overflow-hidden cursor-pointer group"
       onClick={openPanel}
     >
-      {/* ── Default view ── */}
+      {/* ── Default view: compact horizontal layout ── */}
       <div
         ref={defaultRef}
-        className="absolute inset-0 flex flex-col justify-between p-5"
+        className="absolute inset-0 flex items-center justify-between px-5 py-4"
       >
-        {/* Top: label + title */}
-        <div>
+        {/* Left: label + title stacked compactly */}
+        <div className="flex flex-col gap-0.5">
           <div
             className="font-mono text-xs tracking-[0.25em] uppercase"
-            style={{ color: "#b8ff3f" }}
+            style={{ color: "rgba(8,8,8,0.5)" }}
           >
             Resume
           </div>
           <div
-            className="font-bold text-2xl mt-1 leading-tight"
+            className="font-bold text-xl leading-tight"
             style={{
-              color: "#fff",
+              color: "#080808",
               letterSpacing: "-0.02em",
               fontFamily: "var(--font-geist-sans)",
             }}
           >
-            Download
-            <br />CV
+            Download CV
           </div>
         </div>
 
-        {/* Bottom: hint + icon row */}
-        <div className="flex items-end justify-between">
+        {/* Right: icon + hover hint */}
+        <div className="flex items-center gap-3">
           <span
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-mono text-xs tracking-widest uppercase"
-            style={{ color: "rgba(255,255,255,0.3)" }}
+            style={{ color: "rgba(8,8,8,0.45)" }}
           >
-            Click to choose →
+            click →
           </span>
 
           {/* Download arrow icon */}
           <svg
             ref={iconRef}
-            width="28"
-            height="28"
+            width="32"
+            height="32"
             viewBox="0 0 28 28"
             fill="none"
-            style={{ color: "#b8ff3f", flexShrink: 0 }}
+            style={{ color: "#080808", flexShrink: 0 }}
           >
             <circle
               cx="14"
               cy="14"
               r="12.5"
               stroke="currentColor"
-              strokeOpacity="0.25"
+              strokeOpacity="0.3"
               strokeWidth="1"
             />
             <path
@@ -146,7 +136,7 @@ export default function CVCard() {
       {/* ── Language selector panel ── */}
       <div
         ref={panelRef}
-        className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-5"
+        className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-4"
         style={{ background: "#0f1a00" }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -163,13 +153,13 @@ export default function CVCard() {
           Select Language
         </span>
 
-        <div className="flex gap-3 w-full">
+        <div className="flex gap-2 w-full">
           {/* English button */}
           <a
             ref={btnEnRef}
             href={CV_FILES.en}
             download="CV-ZaqaulFikriAziz-EN.pdf"
-            className="flex-1 flex items-center justify-center gap-2 py-3 font-mono text-sm tracking-widest uppercase rounded-lg transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 font-mono text-sm tracking-widest uppercase rounded-lg"
             style={{
               background: "#b8ff3f",
               color: "#080808",
@@ -181,10 +171,6 @@ export default function CVCard() {
               setTimeout(() => closePanel(), 600);
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M3.5 5h2M3.5 7h7M3.5 9h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
             EN
           </a>
 
@@ -193,7 +179,7 @@ export default function CVCard() {
             ref={btnIdRef}
             href={CV_FILES.id}
             download="CV-ZaqaulFikriAziz-ID.pdf"
-            className="flex-1 flex items-center justify-center gap-2 py-3 font-mono text-sm tracking-widest uppercase rounded-lg transition-colors duration-200"
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 font-mono text-sm tracking-widest uppercase rounded-lg"
             style={{
               background: "rgba(184,255,63,0.1)",
               border: "1px solid rgba(184,255,63,0.4)",
@@ -206,10 +192,6 @@ export default function CVCard() {
               setTimeout(() => closePanel(), 600);
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <rect x="1" y="1" width="12" height="12" rx="2" stroke="currentColor" strokeWidth="1.2" />
-              <path d="M3.5 5h2M3.5 7h7M3.5 9h5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-            </svg>
             ID
           </a>
         </div>
@@ -219,7 +201,7 @@ export default function CVCard() {
           ref={closeRef}
           className="font-mono text-xs tracking-widest uppercase"
           style={{
-            color: "rgba(255,255,255,0.25)",
+            color: "rgba(255,255,255,0.3)",
             background: "none",
             border: "none",
             cursor: "pointer",
@@ -240,8 +222,8 @@ export default function CVCard() {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
-          background: "rgba(184,255,63,0.03)",
-          border: "1px solid rgba(184,255,63,0.2)",
+          background: "rgba(8,8,8,0.08)",
+          border: "1px solid rgba(8,8,8,0.2)",
           borderRadius: "inherit",
         }}
       />
