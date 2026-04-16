@@ -83,7 +83,7 @@ export const bentoItems: BentoItemDef[] = [
     mobileHeight: "380px",
   },
 
-  // ── Col 3-7 bottom ───────────────────────────────────
+  // ── Col 3-5 bottom ───────────────────────────────────
   {
     id: 7,
     label:      "Let's Work",
@@ -92,7 +92,20 @@ export const bentoItems: BentoItemDef[] = [
     bg:         "#111111",
     accentColor: "#b8ff3f",
     expandContent: <ContactContent />,
-    gridStyle:  { gridColumn: "3 / span 5", gridRow: "7 / span 2" },
+    gridStyle:  { gridColumn: "3 / span 3", gridRow: "7 / span 2" },
+    mobileHeight: "160px",
+  },
+
+  // ── Col 6-7 bottom — CV Download ─────────────────────
+  // CVCard: special rendering via id=8 in BentoCell
+  {
+    id: 8,
+    label:      "Resume",
+    sublabel:   "Download CV",
+    expandable: false,
+    bg:         "#111111",
+    accentColor: "#b8ff3f",
+    gridStyle:  { gridColumn: "6 / span 2", gridRow: "7 / span 2" },
     mobileHeight: "160px",
   },
 ];

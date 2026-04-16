@@ -6,6 +6,8 @@ import images from "@/public/images";
 import type { BentoItemDef } from "../types";
 import { socialLinks } from "./bento.config";
 import TechStackCard from "./techStackCard";
+import CVCard from "./cvcard";
+
 
 type Props = {
   item:     BentoItemDef;
@@ -49,8 +51,11 @@ export default function BentoCell({ item, onExpand, isMobile }: Props) {
       {/* ── Special: TechStack interactive card ── */}
       {item.id === 6 && <TechStackCard />}
 
+      {/* ── Special: CV Download card ── */}
+      {item.id === 8 && <CVCard />}
+
       {/* ── Default card ── */}
-      {item.id !== 1 && item.id !== 3 && item.id !== 6 && (
+      {item.id !== 1 && item.id !== 3 && item.id !== 6 && item.id !== 8 && (
         <DefaultCard item={item} />
       )}
     </div>
