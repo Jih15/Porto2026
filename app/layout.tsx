@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://zaqaul-fikri-aziz.vercel.app"),
   keywords: ["Flutter developer", "Next.js developer", "mobile developer", "web developer", "Padang", "portfolio", "Laravel", "FastAPI"],
   authors: [{ name: "Zaqaul Fikri Aziz" }],
-  verification: {
-    google: "xxxxxxxxxxxxxxxxxxxx", // ganti dengan kode dari Google
+  alternates: {
+    canonical: "https://zaqaul-fikri-aziz.vercel.app",
   },
   openGraph: {
     title: "Zaqaul Fikri Aziz — Web & Mobile Developer",

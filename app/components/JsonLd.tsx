@@ -13,6 +13,9 @@ export default function JsonLd() {
             "@type": "CollegeOrUniversity",
             name: "Politeknik Negeri Padang",
           },
+          image: "https://zaqaul-fikri-aziz.vercel.app/og-image.png",
+          description: "D4 TRPL graduate specializing in Flutter, Next.js, and Laravel",
+          email: "zaqazaqaul@gmail.com",
           knowsAbout: ["Flutter", "Next.js", "Laravel", "FastAPI"],
           sameAs: [
             "https://github.com/Jih15",
