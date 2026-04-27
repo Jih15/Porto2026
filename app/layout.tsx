@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Zaqaul Fikri Aziz — Web & Mobile Developer",
-  description: "Portfolio of Zaqaul Fikri Aziz",
+  title: "Zaqaul Fikri Aziz — Web Developer | Mobile Developer | UI Design",
+  description: "Portfolio of Zaqaul Fikri Aziz, a D4 Software Engineering graduate specializing in Flutter, Next.js, Laravel, and FastAPI development.",
   metadataBase: new URL("https://zaqaul-fikri-aziz.vercel.app"),
   keywords: ["Flutter developer", "Next.js developer", "mobile developer", "web developer", "Padang", "portfolio", "Laravel", "FastAPI"],
   authors: [{ name: "Zaqaul Fikri Aziz" }],
@@ -23,17 +23,18 @@ export const metadata: Metadata = {
     canonical: "https://zaqaul-fikri-aziz.vercel.app",
   },
   openGraph: {
-    title: "Zaqaul Fikri Aziz — Web & Mobile Developer",
-    description: "D4 Software Engineering graduate specializing in Flutter, Next.js, and Laravel.",
+    title: "Zaqaul Fikri Aziz — Web Developer | Mobile Developer | UI Design",
+    description: "Portfolio of Zaqaul Fikri Aziz, a D4 Software Engineering graduate specializing in Flutter, Next.js, Laravel, and FastAPI development.",
     url: "https://zaqaul-fikri-aziz.vercel.app",
     siteName: "Zaqaul Fikri Aziz",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630 }],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Zaqaul Fikri Aziz — Web & Mobile Developer",
-    images: ["/og-image.png"],
+    title: "Zaqaul Fikri Aziz — Web Developer | Mobile Developer | UI Design",
+    description: "Portfolio of Zaqaul Fikri Aziz, a D4 Software Engineering graduate specializing in Flutter, Next.js, Laravel, and FastAPI development.",
+    images: ["/og-image.jpg"],
   },
 };
 export default function RootLayout({
